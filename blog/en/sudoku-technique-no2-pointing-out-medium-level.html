@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!-- saved from url=(0091)http://touchsudoku.blogspot.com/2016/04/sudoku-technique-no2-pointing-out-medium-level.html -->
+<html class="v2" dir="ltr" lang="en-GB"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="../css/css_bundle_v2.css" rel="stylesheet" type="text/css">
+<meta content="width=1100" name="viewport">
+
+<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link href="http://touchsudoku.github.io/blog/en/sudoku-technique-no2-pointing-out-medium-level.html" rel="canonical">
+<title>Touch Sudoku: Sudoku Technique No.2 Pointing Out - Medium Level</title>
+<link rel="stylesheet" href="../css/blog.css" type="text/css">
+<body class=" variant-simplysimple">
+<div class="navbar no-items section" id="navbar" name="Navbar">
+</div>
+<div class="body-fauxcolumns">
+<div class="fauxcolumn-outer body-fauxcolumn-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+</div>
+<div class="content">
+<div class="content-fauxcolumns">
+<div class="fauxcolumn-outer content-fauxcolumn-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+</div>
+<div class="content-outer">
+<div class="content-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left content-fauxborder-left">
+<div class="fauxborder-right content-fauxborder-right"></div>
+<div class="content-inner">
+<header>
+<div class="header-outer">
+<div class="header-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left header-fauxborder-left">
+<div class="fauxborder-right header-fauxborder-right"></div>
+<div class="region-inner header-inner">
+<div class="header section" id="header" name="Header"><div class="widget Header" data-version="1" id="Header1">
+<div id="header-inner">
+<div class="titlewrapper">
+<h1 class="title">
+<a href="http://touchsudoku.blogspot.com/">
+Touch Sudoku
+</a>
+</h1>
+</div>
+<div class="descriptionwrapper">
+<p class="description"><span>
+</span></p>
+</div>
+</div>
+</div></div>
+</div>
+</div>
+<div class="header-cap-bottom cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+</header>
+<div class="tabs-outer">
+<div class="tabs-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left tabs-fauxborder-left">
+<div class="fauxborder-right tabs-fauxborder-right"></div>
+<div class="region-inner tabs-inner">
+<div class="tabs no-items section" id="crosscol" name="Cross-column"></div>
+<div class="tabs no-items section" id="crosscol-overflow" name="Cross-Column 2"></div>
+</div>
+</div>
+<div class="tabs-cap-bottom cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<div class="main-outer">
+<div class="main-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left main-fauxborder-left">
+<div class="fauxborder-right main-fauxborder-right"></div>
+<div class="region-inner main-inner">
+<div class="columns fauxcolumns">
+<div class="fauxcolumn-outer fauxcolumn-center-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<div class="fauxcolumn-outer fauxcolumn-left-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<div class="fauxcolumn-outer fauxcolumn-right-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<!-- corrects IE6 width calculation -->
+<div class="columns-inner">
+<div class="column-center-outer">
+<div class="column-center-inner">
+<div class="main section" id="main" name="Main"><div class="widget Blog" data-version="1" id="Blog1">
+<div class="blog-posts hfeed">
+
+          <div class="date-outer">
+        
+<h2 class="date-header"><span>Friday, 8 April 2016</span></h2>
+
+          <div class="date-posts">
+        
+<div class="post-outer">
+<div class="post hentry uncustomized-post-template" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+<meta content="3100741982299312794" itemprop="blogId">
+<meta content="6375441085224172448" itemprop="postId">
+<a name="6375441085224172448"></a>
+<h3 class="post-title entry-title" itemprop="name">
+Sudoku Technique No.2<br> Pointing Out - Medium Level
+</h3>
+<div class="post-header">
+<div class="post-header-line-1"></div>
+</div>
+<div class="post-body entry-content" id="post-body-6375441085224172448" itemprop="description articleBody">
+<div style="text-align: center;">
+<div style="text-align: left;">
+<div style="text-align: right;">
+<span style="font-size: 18px;">&nbsp;<a href="../cn/sudoku-technique-no2-pointing-out-medium-level.html" target="_blank">中文版</a></span></div>
+Let's continue with Pointing Out technique, in a higher level.<br>
+<br></div>
+<div style="text-align: left;">
+Look at the board below, focusing on row 4. There are six empty cells in it: 42, 43, 51, 52, 53 and 62 (Please see&nbsp;<a href="http://touchsudoku.blogspot.ca/2016/03/sudoku-rules-and-terminologies.html">Sudoku Rules and Terminology</a>&nbsp;on how to locate cells). Notice there are two 4s around row 4, 54 can point out 51, 52 and 53 because they are in the same box, and 32 can point out 62 because they are in the same column, but we still don't know where 4 goes since there are still two cells 42 and 43 left in row 4.</div>
+<iframe height="300px" src="../testShowMe.html?delay=30&sudoku=0005b8f4a60200000010e00000070000020905040000000030000000007010003a000050000010000&434=((r4+r4)-54-32)-(b1-32)
+" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;" width="300px"></iframe>
+
+<br>
+<div style="text-align: left;">
+Well, turns out, not only cells can be pointers, units can be pointers too! Let's look at box 1, notice the empty cells in box 1 form a letter T. Now beam light from 32 to box 1, the three cells 11, 12, and 13 that form the upper part of the T are pointed out, leaving the two cells 15 and 18 that form lower part of the T. We don't know which one is 4 but we sure know that 4 in box 1 must be in column 2, so now box 1 can be used as a pointer, which can point out 42 in our target row 4, leaving 43 the only cell left. Click on the board, if you haven't yet, to see the animations.<br>
+<div>
+<br></div>
+</div>
+<div style="text-align: left;">
+Another example, box pointer pointing to column.</div>
+<iframe height="300px" src="../testShowMe.html?delay=360&sudoku=0005b8f4a60200000010e00000070d0002c905040000000030000000007010003a000050000010000&525=c5-21-45-95-(b6-45)
+" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;" width="300px"></iframe>
+
+<br>
+<div style="text-align: left;">
+More examples, here is a box pointer pointing to box:</div>
+<iframe height="300px" src="../testShowMe.html?delay=420&sudoku=1ec2f8dgi07000030h0h0c0g60a50200001g00007000080g000000g40030000cb0000g84060700000&684=b6-31-96-(b4-72)
+" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;" width="300px"></iframe>
+
+<br>
+<div style="text-align: left;">
+Of course columns and rows can be unit pointers too, here is an example of column-row pointing:</div>
+<iframe height="300px" src="../testShowMe.html?delay=480&sudoku=b00gh00310a702c00008c0000gb600300000g00008200100b00000e4ahci72f300510000h00600000&319=r1-83-(c1)
+" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;" width="300px"></iframe>
+
+<br>
+<div style="text-align: left;">
+Another example of column-row pointing:</div>
+<iframe height="300px" src="../testShowMe.html?delay=540&sudoku=000bae03620a03fedh5cf0000b17eca802f00100f0ce0f00ce0a803f90b04ae000501f0ca0e60ch0b&287=c5-(r7)
+" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;" width="300px"></iframe>
+
+<br>
+<div style="text-align: left;">
+A special case of column-row pointing, cross pointing:</div>
+<iframe height="300px" src="../testShowMe.html?delay=600&sudoku=cf000020709bf3g0000000b0c0600004bf106040000b020a0f00g0e1f00083b7bc5h60000002acgfe&355=c8-84-(r2-71)
+" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;" width="300px"></iframe>
+
+<br>
+<div style="text-align: left;">
+An example with a box pointing, a column-row pointing and a cross pointing:</div>
+<iframe height="300px" src="../testShowMe.html?delay=660&sudoku=4060c0a02e0c8010f070a00000c01000030ecfb74e00a050ca0fb0f3000051020ea6c000a00000b3f&968=r8-(b1)-(c9-24-(r5))
+" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;" width="300px"></iframe>
+
+<br>
+<div style="text-align: left;">
+The beauty of unit pointers is, they rely:</div>
+<iframe height="300px" src="../testShowMe.html?delay=720&sudoku=800g00f0iid360b0g007009020c050007000000045700000100030e010g0068d0850001g0900a0400&132=b1-37-(b7-(b9-37))
+" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;" width="300px"></iframe>
+
+<br>
+<div style="text-align: left;">
+That's it for unit pointing, now you can use it to solve Medium level Sudoku puzzles.</div>
+</div>
+<br>
+&nbsp;<a href="./sudoku-rules-and-terminologies.html">Sudoku Rules and Terminologies</a><br>
+&nbsp;<a href="./sudoku-technique-no1-pointing-out-easy-level.html">Technique No.1 Pointing Out - Easy Level</a><br>
+<br>
+&nbsp;Technique No.2 Pointing Out - Medium Level<br>
+&nbsp;<a href="./sudoku-technique-no3-fitting-in-medium-level.html">Technique No.3 Fitting In - Medium Level</a><br>
+<br>
+&nbsp;<a href="./sudoku-technique-no4-fitting-in-hard-level.html">Technique No.4 Fitting In - Hard Level</a><br>
+&nbsp;<a href="./sudoku-technique-no5-pointing-out-hard-level.html">Technique No.5 Pointing Out - Hard Level</a><br>
+<br>
+&nbsp;<a href="./sudoku-technique-no6-pointing-out-expert-level.html">Technique No.6 Pointing Out - Expert Level</a><br>
+&nbsp;<a href="./sudoku-technique-no7-fitting-in-expert-level.html">Technique No.7 Fitting In - Expert Level</a><br>
+<div>
+<br></div>
+<div>
+<br></div>
+<span style="font-family: &quot;arial&quot; , sans-serif; font-size: 12px; line-height: 15.6px; white-space: pre-line;">The puzzles in this post are from</span><span style="font-family: &quot;arial&quot; , sans-serif; font-size: 12px; line-height: 1.3; white-space: pre-line;">&nbsp;</span><a href="http://school.maths.uwa.edu.au/~gordon/sudokumin.php" style="font-family: arial, sans-serif; font-size: 12px; line-height: 1.3; white-space: pre-line;">http://school.maths.uwa.edu.au/~gordon/sudokumin.php</a>&nbsp;<span style="font-family: &quot;arial&quot; , sans-serif; font-size: 12px; line-height: 1.3; white-space: pre-line;">The work is licensed under a Creative Commons Attribution 2.5 License. Attribution goes to Gordon Royle and The University of Western Australia.</span><br>
+<pre style="font-family: arial, sans-serif; font-size: 12px; line-height: 1.3; white-space: pre-line; word-wrap: break-word;">&nbsp;</pre>
+<div style="clear: both;"></div>
+</div>
+
+</body></html>
