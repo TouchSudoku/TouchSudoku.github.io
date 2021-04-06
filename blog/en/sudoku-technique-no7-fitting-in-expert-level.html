@@ -1,200 +1,35 @@
 <!DOCTYPE html>
-<!-- saved from url=(0089)http://touchsudoku.blogspot.com/2016/04/sudoku-technique-no7-fitting-in-expert-level.html -->
-<html class="v2" dir="ltr" lang="en-GB"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="../css/css_bundle_v2.css" rel="stylesheet" type="text/css">
-<meta content="width=1100" name="viewport">
-
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" name="viewport">
 <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 <link rel="manifest" href="../../site.webmanifest">
 <link href="http://touchsudoku.github.io/blog/en/sudoku-technique-no7-fitting-in-expert-level.html" rel="canonical">
 <title>Touch Sudoku: Sudoku Technique No.7 Fitting In - Expert Level</title>
-<link rel="stylesheet" href="../css/web.css" type="text/css">
-<link rel="stylesheet" href="../css/mobile.css" type="text/css">
-<body class=" variant-simplysimple">
-<div class="navbar no-items section" id="navbar" name="Navbar">
-</div>
-<div class="body-fauxcolumns">
-<div class="fauxcolumn-outer body-fauxcolumn-outer">
-<div class="cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left">
-<div class="fauxborder-right"></div>
-<div class="fauxcolumn-inner">
-</div>
-</div>
-<div class="cap-bottom">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-</div>
-</div>
-<div class="content">
-<div class="content-fauxcolumns">
-<div class="fauxcolumn-outer content-fauxcolumn-outer">
-<div class="cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left">
-<div class="fauxborder-right"></div>
-<div class="fauxcolumn-inner">
-</div>
-</div>
-<div class="cap-bottom">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-</div>
-</div>
-<div class="content-outer">
-<div class="content-cap-top cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left content-fauxborder-left">
-<div class="fauxborder-right content-fauxborder-right"></div>
-<div class="content-inner">
-<header>
-<div class="header-outer">
-<div class="header-cap-top cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left header-fauxborder-left">
-<div class="fauxborder-right header-fauxborder-right"></div>
-<div class="region-inner header-inner">
-<div class="header section" id="header" name="Header"><div class="widget Header" data-version="1" id="Header1">
-<div id="header-inner">
-<div class="titlewrapper">
+<link rel="stylesheet" href="../css/main.css" type="text/css">
+</head>
+<body>
 <h1 class="title">
 <a href="http://touchsudoku.github.io/">
 Touch Sudoku
 </a>
 </h1>
-</div>
-<div class="descriptionwrapper">
-<p class="description"><span>
-</span></p>
-</div>
-</div>
-</div></div>
-</div>
-</div>
-<div class="header-cap-bottom cap-bottom">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-</div>
-</header>
-<div class="tabs-outer">
-<div class="tabs-cap-top cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left tabs-fauxborder-left">
-<div class="fauxborder-right tabs-fauxborder-right"></div>
-<div class="region-inner tabs-inner">
-<div class="tabs no-items section" id="crosscol" name="Cross-column"></div>
-<div class="tabs no-items section" id="crosscol-overflow" name="Cross-Column 2"></div>
-</div>
-</div>
-<div class="tabs-cap-bottom cap-bottom">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-</div>
-<div class="main-outer">
-<div class="main-cap-top cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left main-fauxborder-left">
-<div class="fauxborder-right main-fauxborder-right"></div>
-<div class="region-inner main-inner">
-<div class="columns fauxcolumns">
-<div class="fauxcolumn-outer fauxcolumn-center-outer">
-<div class="cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left">
-<div class="fauxborder-right"></div>
-<div class="fauxcolumn-inner">
-</div>
-</div>
-<div class="cap-bottom">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-</div>
-<div class="fauxcolumn-outer fauxcolumn-left-outer">
-<div class="cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left">
-<div class="fauxborder-right"></div>
-<div class="fauxcolumn-inner">
-</div>
-</div>
-<div class="cap-bottom">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-</div>
-<div class="fauxcolumn-outer fauxcolumn-right-outer">
-<div class="cap-top">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-<div class="fauxborder-left">
-<div class="fauxborder-right"></div>
-<div class="fauxcolumn-inner">
-</div>
-</div>
-<div class="cap-bottom">
-<div class="cap-left"></div>
-<div class="cap-right"></div>
-</div>
-</div>
-<!-- corrects IE6 width calculation -->
-<div class="columns-inner">
-<div class="column-center-outer">
-<div class="column-center-inner">
-<div class="main section" id="main" name="Main"><div class="widget Blog" data-version="1" id="Blog1">
-<div class="blog-posts hfeed">
-
-          <div class="date-outer">
-        
 <h2 class="date-header"><span>Saturday, 30 April 2016</span></h2>
-
-          <div class="date-posts">
-        
-<div class="post-outer">
-<div class="post hentry uncustomized-post-template" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
-<meta content="3100741982299312794" itemprop="blogId">
-<meta content="5624618899046908807" itemprop="postId">
-<a name="5624618899046908807"></a>
 <h3 class="post-title entry-title" itemprop="name">
 Sudoku Technique No.7<br> Fitting In - Expert Level
 </h3>
-<div class="post-header">
-<div class="post-header-line-1"></div>
+<div class="language" style="text-align: right;">
+<span style="font-size: 18px;">&nbsp;<a href="../cn/sudoku-technique-no7-fitting-in-expert-level.html" target="_blank">中文版</a></span>
 </div>
-<div class="post-body entry-content" id="post-body-5624618899046908807" itemprop="description articleBody">
-<div style="text-align: center;">
-<div style="text-align: left;">
-<div style="text-align: right;">
-<span style="font-size: 18px;">&nbsp;<a href="../cn/sudoku-technique-no7-fitting-in-expert-level.html" target="_blank">中文版</a></span></div>
 If we have Double Pointers, do we have Double Fitters? Absolutely yes, this post is the Expert level of Fitting In technique, Angel's Wings with Double Fitters.<br>
 <br>
-See the board below, angel's two wings are at 41 and 67. Click the board to see how it works.</div>
-<iframe width="320px" height="320px" src="../showMe.html?delay=10&sudoku=gcebfh4i1a8di7cefbb00eda3hg0ac02d0754g030ebafeb0ga00dc3db10g6e005a0c0g2d0074ebac0&619=((b6+r4)-24)+(b4+(66)+(66))+(r6+(23)+(23))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe><br>
-<div style="text-align: left;">
+See the board below, angel's two wings are at 41 and 67. Click the board to see how it works.
+<br>
+<div class="separator" style="clear: both; text-align: center;">
+<iframe width="320px" height="320px" src="../showMe.html?delay=10&sudoku=gcebfh4i1a8di7cefbb00eda3hg0ac02d0754g030ebafeb0ga00dc3db10g6e005a0c0g2d0074ebac0&619=((b6+r4)-24)+(b4+(66)+(66))+(r6+(23)+(23))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
+</div>
 As you can see, number 6 in 66 can fit in two cells of box 4: 41 and 49, and number 8 can fit in two cells of row 6: 49 and 67.&nbsp;Cell 41, 47 and 67 form a chain that linked the two wings.&nbsp;Think of the two possibilities of number 6:<br>
 <br>
 &nbsp;- If 6 goes to 41 then&nbsp;61&nbsp;must be 9 in row 4;<br>
@@ -204,20 +39,27 @@ Try number 8 you have the same result, either way leads to solution 619.<br>
 <br>
 If you find a chain that can link the two wings - you find the angel!<br>
 <br>
-The chain can be longer, in the board below, Double Fitters of 4, 1 and 5 form a chain 89, 87, 27 and 28, linked the two wings of the angel 89 and 28, the angel is 298.</div>
-<iframe width="320px" height="320px" src="../showMe.html?delay=360&sudoku=h00b4ga3912gfcid00cid000f7b6g0890c0050c0g02i0i00300g00g00ib15dcd0970chb0b30000i0g&298=((b2+c6)-51)+(b8+(22)+(22))+(c4+(44)+(44))+(b2+(83)+(83))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px; text-align: center;"></iframe><br>
-<div style="text-align: left;">
-The chain can be formed by same number Double Fitters, in the board below, Double Fitter of 7 in box 7 and box 8 form a chain 76, 71, 83 and 89, linked the two wings of the angel 76 and 89, revealing the angel 6 at 85. Note here that since it's the same number chain, 71 and 83 are linked by 'seeing each other'.&nbsp;</div>
-<iframe width="320px" height="320px" src="../showMe.html?delay=420&sudoku=h00e4c2ga5dcgb1hfib7a000ed3fb00c41500a8febc9003eag0fb00eb380da61h0d0e0cbc0d2a00he&856=((b8+r8)-93-67)+(b7+(18)+(18))+(b8+(58)+(58))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe><br>
-<div style="text-align: left;">
-Double Pointing Out and Double Fitting In can work together. In the board below, one of the wing, 85, is pointed out by Double Pointer of 7 in 76 and 43, then Double Fitter of 9 fits into 43 and 43 and 51, finally Double Fitter of 8 fits into 51 and the other wing, 59, reveal the angel 7 at 58.</div>
-<iframe width="320px" height="320px" src="../showMe.html?delay=480&sudoku=h00e4c2ga5dcgb1hfib7a000ed3fb00c41500a8febc9003ea00fb00eb380da61h0d0e0cbc0d2a00he&587=((b5+c5)-24-18)-(c3-32)+(r4+(36)+(36))+(b5+(82)+(82))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe><br>
-<div style="text-align: left;">
+The chain can be longer, in the board below, Double Fitters of 4, 1 and 5 form a chain 89, 87, 27 and 28, linked the two wings of the angel 89 and 28, the angel is 298.
 <br>
+<div class="separator" style="clear: both; text-align: center;">
+<iframe width="320px" height="320px" src="../showMe.html?delay=360&sudoku=h00b4ga3912gfcid00cid000f7b6g0890c0050c0g02i0i00300g00g00ib15dcd0970chb0b30000i0g&298=((b2+c6)-51)+(b8+(22)+(22))+(c4+(44)+(44))+(b2+(83)+(83))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px; text-align: center;"></iframe>
+</div>
+The chain can be formed by same number Double Fitters, in the board below, Double Fitter of 7 in box 7 and box 8 form a chain 76, 71, 83 and 89, linked the two wings of the angel 76 and 89, revealing the angel 6 at 85. Note here that since it's the same number chain, 71 and 83 are linked by 'seeing each other'.
+<br>
+<div class="separator" style="clear: both; text-align: center;">
+<iframe width="320px" height="320px" src="../showMe.html?delay=420&sudoku=h00e4c2ga5dcgb1hfib7a000ed3fb00c41500a8febc9003eag0fb00eb380da61h0d0e0cbc0d2a00he&856=((b8+r8)-93-67)+(b7+(18)+(18))+(b8+(58)+(58))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
+</div>
+Double Pointing Out and Double Fitting In can work together. In the board below, one of the wing, 85, is pointed out by Double Pointer of 7 in 76 and 43, then Double Fitter of 9 fits into 43 and 43 and 51, finally Double Fitter of 8 fits into 51 and the other wing, 59, reveal the angel 7 at 58.
+<br>
+<div class="separator" style="clear: both; text-align: center;">
+<iframe width="320px" height="320px" src="../showMe.html?delay=480&sudoku=h00e4c2ga5dcgb1hfib7a000ed3fb00c41500a8febc9003ea00fb00eb380da61h0d0e0cbc0d2a00he&587=((b5+c5)-24-18)-(c3-32)+(r4+(36)+(36))+(b5+(82)+(82))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
+</div>
 There you have it, exclusively from Touch Sudoku, the Angel's Wings technique, so beautiful so powerful yet easy to spot, it will downgrade puzzles used to be considered diabolical.<br>
 <br>
 Enjoy.<br>
 <br>
+<br>
+<div class="index" style="clear: both; text-align: left;">
 &nbsp;<a href="./sudoku-rules-and-terminologies.html">Sudoku Rules and Terminologies</a><br>
 &nbsp;<a href="./sudoku-technique-no1-pointing-out-easy-level.html">Technique No.1 Pointing Out - Easy Level</a><br>
 <br>
@@ -229,14 +71,10 @@ Enjoy.<br>
 <br>
 &nbsp;<a href="./sudoku-technique-no6-pointing-out-expert-level.html">Technique No.6 Pointing Out - Expert Level</a><br>
 &nbsp;Technique No.7 Fitting In - Expert Level<br>
-<div>
-<br></div>
+<br>
 </div>
-<div style="text-align: left;">
-<br></div>
-</div>
-<pre style="font-family: arial, sans-serif; font-size: 12px; line-height: 1.3; white-space: pre-line; word-wrap: break-word;">The puzzles in this post are from <a href="http://school.maths.uwa.edu.au/~gordon/sudokumin.php">http://school.maths.uwa.edu.au/~gordon/sudokumin.php</a> The work is licensed under a Creative Commons Attribution 2.5 License. Attribution goes to Gordon Royle and The University of Western Australia.</pre>
-<div style="clear: both;"></div>
-</div>
-
-</body></html>
+<pre style="background-color: white; color: #333333; font-family: arial, sans-serif; font-size: 12px; line-height: 1.3; white-space: pre-line; word-wrap: break-word;">
+The puzzles in this post are from <a href="http://school.maths.uwa.edu.au/~gordon/sudokumin.php" style="line-height: 1.3;">http://school.maths.uwa.edu.au/~gordon/sudokumin.php</a> The work is licensed under a Creative Commons Attribution 2.5 License. Attribution goes to Gordon Royle and The University of Western Australia.
+</pre>
+</body>
+</html>
