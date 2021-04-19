@@ -18,56 +18,51 @@
 </h1>
 <h2 class="date-header"><span>Saturday, 30 April 2016</span></h2>
 <h3 class="post-title entry-title" itemprop="name">
-Sudoku Technique No.6<br> Pointing Out - Expert Level
+数独技巧之六
 </h3>
 <div class="language" style="text-align: right;">
 <span style="font-size: 18px;">&nbsp;<a href="../en/sudoku-technique-no6-pointing-out-expert-level.html">English Version</a></span>
 </div>
-So far we have been using one unit as target to do pointing out and/or fitting in, now we are going to add one dimension to it, a two-unit target!<br>
 <br>
-See the board below, you can see both column 6 and row 7 are highlighted. Three empty cells and two missing numbers, 4 and 6, in the two-unit target. It seems locked: if 4 goes to 71 then 83 is 6 and 59 is 4, vice versa if you switch number 4 and 6. This situation often happen close to the end of the puzzle, make you attempt to guess.
+数独技巧只有两种：推法和敲法。<br>
+本文介绍敲法的至尊级。<br>
 <br>
+从初级到高级，无论推法还是敲法，都要先确定一个目标单元。到了至尊级也是一样，只不过目标是两个单元！<br>
+<br>
+请看下图，我们的目标单元是行7和列6，两个单元同时被高亮显示。在这个双单元目标中有三个空格59、71和83，缺两个数字4和6，似乎构成死锁局面。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=10&sudoku=1f5gihdb30i042caef3db6aegihe7dc8b6ai0cia0g502ba0ie0c0g02ahc0i7e0h050ib3aiecbg1hfd&836=((c6+r7))-(b4)" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-No need of guess work in this case, the key of the lock is in box 4. There are two empty cells and two missing numbers, 6 and 8, in box 4. Number 8 won't help in this case but for number 6 we have 2 assumptions:<br>
-&nbsp;- If 6 goes to 44, then 71 cannot be 6, then 83 must be 6<br>
-&nbsp;- If 6 goes to 49, then 59 cannot be 6, then 83 must be 6<br>
-Both assumptions lead to the same solution: 836. Click the board to see it in animations.<br>
+解开这把锁的钥匙在宫4。宫4中有两个空格44和49，缺两个数字6和8，请考虑如下两种可能：<br>
+&nbsp;- 如果6进44，可以敲掉行7中的71，6进行7中的83；<br>
+&nbsp;- 如果6进49，可以敲掉列6中的59，6进列6中的83。<br>
+两种可能导出同样结果，得解836。请点击上图观看动画演示。<br>
 <br>
-If you could click the board&nbsp;again&nbsp;and look at the two-unit target, one of the three empty cells 83 is sharing between column 6 and row 7, the other two empty cells 71 and 59 are stretching out like 2 wings. I call it Angel's Wings. When locate Angel's Wings, we need a pointer that can point out both of the wings at the same time box 4 is just what we need, with its 44 point out 71 and 49 point out 59. I call it Double Pointer.<br>
+能构成双单元目标的两个单元必须要有唯一公共的空格，如上图中的格83，其它空格分布两侧，像展开的双翼，而宫4是同时敲向双翼的双锤。<br>
 <br>
-When you find Double Pointers that can point out both of the Angel's Wings, you find the angel!<br>
-<br>
-In the board below, the angel hides in column 2 and row 6, but it needs two cell pointer 16 and 81 to reveal the Angel's Wings, head in 48, wings in 68 and 75, click the board to see it. Box 9 is the Double Pointer that points out both of the wings 68 and 75, we find the angel 6 in 48.
-<br>
+下图中的双目标单元是行6和列2，经过16和81的敲打形成两翼在68和75，而同时敲向双翼的双锤在宫9，答案是486。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=360&sudoku=b0eaf0i341cfedib00d00bc0f5a02a05c7d00430bfea0e0001dc0b9ed6ga8bcc0b40e1000a0302d0e&486=((c2+r6)-16-81)-(b9)" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-Box 9 also shows you the beauty of Double Pointer: it does not matter how many empty cells in the pointer unit, as long as all the empty cells can form two beams pointing to two directions.
+上图的宫9也展示了双锤之美：单元中可以有多个空格，只要所有空格能分别敲向两个方向，这个单元就可以做双锤用。<br>
 <br>
-Another example, this time the angel hides in box 2 and row 1, it takes fitter 1 and 9 in column 5 to reveal the Angel's Wings. Row 4 does the double pointing job and we find the angel 4 in 21.
-<br>
+下图中双单元目标在宫2和行1，通过推入列5中的1和9露出双翼11和26，双锤在行4，答案214。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=420&sudoku=05h073ab62fge0008cca0fhb0ge03agb05fh0008c004a0h01000cif0005h3a780c200fed10ec00hib&214=((b2+r1)+(b2+(c5+(57+77)+(69+98))))-(r4)" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-Revealing Angel's Wings can be complicated, click the board below to see how it's revealed in column 4 and row 1, and click the board again to see how column 8 does its double pointing.
-<br>
+下图中双单元目标在行1列4，请点击观看动画演示揭示双翼的复杂过程，再点击看大双锤敲出答案218。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=480&sudoku=03b0900a40001d020c0a0cb0i0f96a2ec0d0080ifa53bcbed00fi10d003ba6020f0a4c0010cf0idb0&218=((c4+r1)+(r1+(64+(b8-52))+(87+67))-(b7-45))-(c8)" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-Finding the Double Pointer is not always easy either, click the board below to see Angel's Wings in column 1 and row 1, and click the board again to see how box 5 comes to be the Double Pointer.
-<br>
+下图中双单元目标在行1列1，简单明了，双锤的形成颇费周折，请点击观看动画。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=540&sudoku=0ad705bhc8ecab040gb0g0c010ea70b00e30cde01g6b00200ecga0e003da07240b0g005ag01e8b0df&116=((c1+r1))-(b5+(c6+(34+74)+(14+88))-64)" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-And Double Pointers, relay, click the board below to see Angel's Wings in column 4 and row 7, and click the board again to see how Double Pointer row 5 points out one wing 83, relays to box 9, which relays to column 2, which points out the other wing 27, finally we find angel 6 in 81.
-<br>
+单个双锤有时还不够用，请点击观看下图中三个双锤连环出击，敲出答案816。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=600&sudoku=05ba00cg801cg20d00d0003020agb65ich143i08a00bgah0b0g00c2da0h073e0c04010hb000c0bad0&816=((c4+r7))-(r5-43)-(b9)-(c2)" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-That's the Angel's Wings with Double Pointers, a brand new technique, but think about it, it's still Pointing Out technique, extended into two-dimension!<br>
-<br>
+这就是敲法的至尊级，双锤敲双翼。<br>
 <br>
 <div class="index" style="clear: both; text-align: left;">
 &nbsp;<a href="./sudoku-rules-and-terminologies.html">数独的规则和术语</a><br>

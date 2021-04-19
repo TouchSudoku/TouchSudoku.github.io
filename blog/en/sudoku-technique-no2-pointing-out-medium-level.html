@@ -23,25 +23,24 @@ Sudoku Technique No.2<br> Pointing Out - Medium Level
 <div class="language" style="text-align: right;">
 <span style="font-size: 18px;">&nbsp;<a href="../cn/sudoku-technique-no2-pointing-out-medium-level.html">中文版</a></span>
 </div>
+<br>
 Let's continue with Pointing Out technique, in a higher level.<br>
 <br>
-Look at the board below, focusing on row 4. There are six empty cells in it: 42, 43, 51, 52, 53 and 62 (Please see&nbsp;<a href="./sudoku-rules-and-terminologies.html">Sudoku Rules and Terminology</a>&nbsp;on how to locate cells). Notice there are two 4s around row 4, 54 can point out 51, 52 and 53 because they are in the same box, and 32 can point out 62 because they are in the same column, but we still don't know where 4 goes since there are still two cells 42 and 43 left in row 4.
+Look at the board below, focusing on row 4. There are six empty cells in it: 42, 43, 51, 52, 53 and 62 (Please see&nbsp;<a href="./sudoku-rules-and-terminologies.html">Sudoku Rules and Terminology</a>&nbsp;on how to locate cells). Notice there are two 4s around row 4, 54 can point out 51, 52 and 53 because they are in the same box, and 32 can point out 62 because they are in the same column, but we still don't know where 4 goes since there are still two cells 42 and 43 left in row 4.<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=30&sudoku=0005b8f4a60200000010e00000070000020905040000000030000000007010003a000050000010000&434=((r4+r4)-54-32)-(b1-32)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
 Well, turns out, not only cells can be pointers, units can be pointers too! Let's look at box 1, notice the empty cells in box 1 form a letter T. Now beam light from 32 to box 1, the three cells 11, 12, and 13 that form the upper part of the T are pointed out, leaving the two cells 15 and 18 that form lower part of the T. We don't know which one is 4 but we sure know that 4 in box 1 must be in column 2, so now box 1 can be used as a pointer, which can point out 42 in our target row 4, leaving 43 the only cell left. Click on the board, if you haven't yet, to see the animations.<br>
 <br>
-Another example, box pointer pointing to column.
+Another example, box pointer pointing to column.<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=360&sudoku=0005b8f4a60200000010e00000070d0002c905040000000030000000007010003a000050000010000&525=c5-21-45-95-(b6-45)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-More examples, here is a box pointer pointing to box:
-<br>
+More examples, here is a box pointer pointing to box:<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=420&sudoku=1ec2f8dgi07000030h0h0c0g60a50200001g00007000080g000000g40030000cb0000g84060700000&684=b6-31-96-(b4-72)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-Of course columns and rows can be unit pointers too, here is an example of column-row pointing:</div>
-<br>
+Of course columns and rows can be unit pointers too, here is an example of column-row pointing:s<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=480&sudoku=b00gh00310a702c00008c0000gb600300000g00008200100b00000e4ahci72f300510000h00600000&319=r1-83-(c1)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>

@@ -23,41 +23,43 @@
 <div class="language" style="text-align: right;">
 <span style="font-size: 18px;">&nbsp;<a href="../en/sudoku-rules-and-terminologies.html">English Version</a></span>
 </div>
-A classic Sudoku board is a grid of 9x9 cells separated into nine 3x3 boxes, the game starts with some of the cells preset with number 1 to 9.
+数独的盘面分有9个宫，每一宫又分为9个格，共9行9列9宫81格。游戏开始时部分格中预先填有数字1到9。
 <br>
 <div class="separator" style="clear: both; text-align: center;">
 <img style="margin: 10px; width: 320px; height: 320px;" src="../img/IMG_20160331_175942.png">
 </div>
-The goal of Sudoku is to fill the empty cells so that each column, each row and each box contains all the numbers from 1 to 9.
+游戏的目标是在空格中填入数字1到9，使得每行每列和每个宫中数字1到9只出现一次。
 <br>
 <div class="separator" style="clear: both; text-align: center;">
 <img style="margin: 10px; width: 320px; height: 320px;" src="../img/IMG_20160331_180421.png">
 </div>
-There are 9 columns, 9 rows, 9 boxes, which are also called units.<br>
+数独盘面中的行、列和宫又统称单元。<br>
 <br>
-Columns are column 1 to column 9 from left to right.<br>
-Rows are row 1 to row 9 from top to bottom.<br>
-Boxes are box 1 to box 9 from left to right, top to bottom.<br>
+9个行从上到下为行1至行9；<br>
+9个列从左到右为列1至列9；<br>
+9个宫从左到右从上到下为宫1至宫9；<br>
 <br>
-As for the cells, we use 2 digits to locate them, the first digit is the box the cell is in, the second digit is the position the cell is within that box.<br>
+81个格则由两位数来标记：十位表示其所在的宫，个位表示其在宫中的位置。<br>
 <br>
-Let's get familiar with these terms with examples. In the Sudoku board below, box 2 is highlighted, and the only empty cell in box 2 is the 5th cell in the box, so we say 25 is the only empty cell in box 2.<br>
+让我们来熟悉一下这些术语。在下面的盘面中宫2被高亮显示，其中的唯一空格是第5格，我们说格25是宫2中唯一的空格。由于宫2中只缺数字3，所以数字3应该填入格25，简单说答案是253。
 <div class="separator" style="clear: both; text-align: center;">
 <img style="margin: 10px; width: 320px; height: 320px;" src="../img/IMG_20160331_180232.png">
 </div>
-Since the only number missing in box 2 is 3, so 3 should be filled into 25, we say the solution is 253.<br>
+在下面的盘面中行3被高亮显示，其中的唯一空格位于宫3中第的9格，我们说格39是行3中唯一的空格。由于行3中只缺数字3，所以数字3应该填入格39，简单说答案是393。
 <br>
-In the Sudoku board below, row 3 is highlighted, and the only empty cell in row 3 is the 9th cell in box 3, so we say 39 is the only empty cell in row 3. Since the only number missing in row 3 is 3, the solution is 393.<br>
 <div class="separator" style="clear: both; text-align: center;">
 <img style="margin: 10px; width: 320px; height: 320px;" src="../img/IMG_20160331_180336.png">
 </div>
-In the Sudoku board below, column 8 is highlighted, and the only empty cell in column 8 is the 8th cell in box 6, so we say 68 is the only empty cell in column 8. Since the only number missing in column 8 is 7, the solution is 687.<br>
+在下面的盘面中列8被高亮显示，其中的唯一空格位于宫6中第的8格，我们说格68是列8中唯一的空格。由于列8中只缺数字7，所以数字7应该填入格68，简单说答案是687。
 <div class="separator" style="clear: both; text-align: center;">
 <img style="margin: 10px; width: 320px; height: 320px;" src="../img/IMG_20160331_180405.png">
 </div>
-That's about all the terms you need to know to understand the Sudoku techniques I introduce in this blog. You may find the way I locate the cells different, my argue is that, firstly, it gets rid of the confusion of different ways of representing columns and rows (letters for rows, digits for columns or vice versa?); secondly, it's easier and faster to locate a cell within a box than to count it within a column or a row.<br>
+以上就是您需要了解的所有术语，其中格的记法以宫为本，与其它网站的各种横竖坐标记法有所不同。原因是人的视线更容易定位9个宫以及定位宫中的9个格，相比较要定位行或列以及其中的格就需要视线扫描。
 <br>
-Boxes are playing more important role than columns and rows in Sudoku, after all Latin square has been around for a few hundred years, it's the additional 3x3 box constraint, ingeniously added by its inventor&nbsp;<a href="http://en.wikipedia.org/wiki/Howard_Garns" title="Howard Garns">Howard Garns</a>, that makes Sudoku so much more interesting, that makes Sudoku the most popular puzzle in the world.<br>
+<br>
+宫是数独的重要角色，如果没有了宫，数独就只是一个拉丁方阵（拉丁方阵由瑞士數學家欧拉命名，所以有些网站说数独起源瑞士）。拉丁方阵被研究了几百年，没有人拿它当游戏玩，是数独的发明者美国退休建筑师
+<a href="http://en.wikipedia.org/wiki/Howard_Garns" title="Howard Garns">Howard Garns</a>
+加上了宫的限制，才使得它变成趣味无穷的世界第一智力游戏。
 <br>
 <br>
 <div class="index" style="clear: both; text-align: left;">

@@ -18,49 +18,46 @@
 </h1>
 <h2 class="date-header"><span>Saturday, 9 April 2016</span></h2>
 <h3 class="post-title entry-title" itemprop="name">
-Sudoku Technique No.3<br> Fitting In - Medium Level
+数独技巧之三
 </h3>
 <div class="language" style="text-align: right;">
 <span style="font-size: 18px;">&nbsp;<a href="../en/sudoku-technique-no3-fitting-in-medium-level.html">English Version</a></span>
 </div>
-Let's move to Fitting In technique, in Medium level. You may wondering where is the Fitting In Easy level, well, in&nbsp;<a href="./sudoku-rules-and-terminologies.html">Sudoku Rules and Terminology</a>, see the examples that eight of the numbers nicely fitted in a unit? The last number goes to the last empty cell, that Easy level of Fitting In, too obvious to have a separate blog for it. But it gives the idea what Fitting In technique is: when when eight numbers can fit in a unit, the last number goes to the last empty cell.<br>
 <br>
-See the board below, look at box 3, there are 3 empty cells 31, 34 and 37 and 3 missing numbers 3, 6 and 7. There is a 3 in 23 that can point out 3 from 31 but leaves two empty cells 34 and 37, there is a 7 in 11 that can point out 7 from 31 but leaves two empty cells 34 and 37, so Pointing Out technique cannot apply here.
+数独技巧只有两种：推法和敲法。<br>
+本文介绍推法的中级。<br>
 <br>
+细心的读者会问，怎么没有推法的初级？请回忆“数独的规则和术语”文中的例图，当单元中九个格被填入八个时，最后一个数字填入最后一个空格。这就是推法的初级，虽然简单，但却展示了推法的本源：如果能把n个数字推入某个有n+1个空格的单元，使得该单元仅剩一个空格，最后一个数字填入最后一个空格。<br>
+<br>
+请看下图，锁定宫3。宫3空三个格31、34和37，缺三个数3、6和7。敲法在这不好用，32可以敲掉31中的3，还有两个格34和37可能是3；11中的7可以敲掉31中的7，还有两个格34和37可能是7。
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=300&sudoku=g0e0hc04180a50d0ibd0000a0eh2ad00086cc7h14fibee00h3bdag6egda82ciahb3fi5gdi4c000ahf&316=b3+23+11" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-But think from the other side, if 31 cannot be 3 then 3 must in either 34 or 37, if 31 cannot be 7 the 7 must be in either 34 or 37, so 3 and 7 can nicely fit into 34 and 37, we don't know which number in which cell but the point is, eight numbers are now fitting in box 3, leaving the last number 6 go to the&nbsp;last empty cell 31! Click the board to see the animations.<br>
+但是换一个角度思考，3可能在34和37中，7也可能在34和37中，那么34和37两个格恰好装3和7两个数，所以我们可以把3和7推入宫3。数字3和7的位置并不确定，但重要的是，宫3就只剩下最后一个空格31，也就只能填入最后一个数字6。答案是316，点击上图观看动画演示。<br>
 <br>
-Another example of fitting in a box, like an orchid centerpiece.
-<br>
+下图是又一个例子，数字4、7、8和9被推入中宫，像一朵盛开的紫色兰花。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=360&sudoku=b006i001007f02000004800000050i301000g200008e0d0050b000300000005h00040700600000000&556=b5+85+44+64+22" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-More examples, fitting in a column:
-<br>
+三个数字1、4和7推入列5：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=420&sudoku=d000i2h309b0000600h00050b0icad96h7ebf82000dicg00bcd1fha000030245dh7bicafb0000008g&828=c5+71+93+84" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-Fitting in a row:
-<br>
+四个数字1、3、5和7推入行3：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=480&sudoku=000gc8f51073aef000600dib0000002703de540hfc000gc0e400f010g6050000000ad72000000gea0&378=r3+33+61+32+94" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-Fitting In technique is harder to spot than the same level of Pointing Out, especially when more than three empty cells in a unit, you need to scan three or more numbers in three adjacent units. The same solution may come from different unit depending which unit you choose to be the target. The same solution in previous board, which was four numbers fitting in row 3, could be different four numbers fitting in column 7:
-<br>
+推法看似简单，却不容易观察到。尤其当空格数三个以上，需要找三个以上数字，试推三个相邻单元。锁定不同的单元，同一答案又有不同的推法，例如上图的答案378，还有如下两种推法，四个数字1、2、4和5推入列7：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=540&sudoku=000gc8f51073aef000600dib0000002703de540hfc000gc0e400f010g6050000000ad72000000gea0&378=c7+33+29+27+32" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-Or could be other five numbers fitting in box 3:
-<br>
+五个数字2、3、4、7和9推入宫3：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=600&sudoku=000gc8f51073aef000600dib0000002703de540hfc000gc0e400f010g6050000000ad72000000gea0&378=b3+29+61+27+94+28" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-Of course 推敲数独 will always give you the simplest of the solutions.
+当然推敲数独会给出最简单答案。<br>
 <br>
-With the 3 techniques so for, you can solve all the Medium level Sudoku puzzles.
-<br>
+到此数独中级技巧介绍完毕，所有中级谜题迎刃而解。<br>
 <br>
 <div class="index" style="clear: both; text-align: left;">
 &nbsp;<a href="./sudoku-rules-and-terminologies.html">数独的规则和术语</a><br>

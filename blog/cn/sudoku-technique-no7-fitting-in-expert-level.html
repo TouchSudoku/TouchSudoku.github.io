@@ -18,45 +18,42 @@
 </h1>
 <h2 class="date-header"><span>Saturday, 30 April 2016</span></h2>
 <h3 class="post-title entry-title" itemprop="name">
-Sudoku Technique No.7<br> Fitting In - Expert Level
+数独技巧之七
 </h3>
 <div class="language" style="text-align: right;">
 <span style="font-size: 18px;">&nbsp;<a href="../en/sudoku-technique-no7-fitting-in-expert-level.html">English Version</a></span>
 </div>
-If we have Double Pointers, do we have Double Fitters? Absolutely yes, this post is the Expert level of Fitting In technique, Angel's Wings with Double Fitters.<br>
 <br>
-See the board below, angel's two wings are at 41 and 67. Click the board to see how it works.
+数独技巧只有两种：推法和敲法。<br>
+本文介绍推法的至尊级。<br>
+有双敲就该有双推呀，当然，推法的至尊级就是双推缚双翼。<br>
 <br>
+请看下图，双单元目标在宫6和行4，双翼在41和67，请先点击看双翼如何被缚。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=10&sudoku=gcebfh4i1a8di7cefbb00eda3hg0ac02d0754g030ebafeb0ga00dc3db10g6e005a0c0g2d0074ebac0&619=((b6+r4)-24)+(b4+(66)+(66))+(r6+(23)+(23))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-As you can see, number 6 in 66 can fit in two cells of box 4: 41 and 49, and number 8 can fit in two cells of row 6: 49 and 67.&nbsp;Cell 41, 47 and 67 form a chain that linked the two wings.&nbsp;Think of the two possibilities of number 6:<br>
+可以看到，格66中的数字6可能占宫4中的41或49，格23中的数字8可能占行6中的49或67，41、49和67像一根锁链缚住了双翼。设想数字6两种可能：
 <br>
-&nbsp;- If 6 goes to 41 then&nbsp;61&nbsp;must be 9 in row 4;<br>
-&nbsp;- If 6 goes to 47 then 8 goes to 67 then 61 must be 9 in box 6.<br>
+&nbsp;- 如果6占41，那么行4中的9在61；<br>
+&nbsp;- 如果6占49，那么行6中的8在67，宫6中的9在61。<br>
 <br>
-Try number 8 you have the same result, either way leads to solution 619.<br>
+换从数字8来推导会有同样结论，两种可能一样答案。<br>
 <br>
-If you find a chain that can link the two wings - you find the angel!<br>
-<br>
-The chain can be longer, in the board below, Double Fitters of 4, 1 and 5 form a chain 89, 87, 27 and 28, linked the two wings of the angel 89 and 28, the angel is 298.
-<br>
+上图是最短的双环链，下图中数字4、1和5链成三环链，缚位于宫2和列6的双翼，得解298。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=360&sudoku=h00b4ga3912gfcid00cid000f7b6g0890c0050c0g02i0i00300g00g00ib15dcd0970chb0b30000i0g&298=((b2+c6)-51)+(b8+(22)+(22))+(c4+(44)+(44))+(b2+(83)+(83))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px; text-align: center;"></iframe>
 </div>
-The chain can be formed by same number Double Fitters, in the board below, Double Fitter of 7 in box 7 and box 8 form a chain 76, 71, 83 and 89, linked the two wings of the angel 76 and 89, revealing the angel 6 at 85. Note here that since it's the same number chain, 71 and 83 are linked by 'seeing each other'.
-<br>
+相同数字也可以构成链，点击看下图中的数字7构成的链76和71到83和89，由于是同一数字，71和83是同过遥相呼应连到一起的。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=420&sudoku=h00e4c2ga5dcgb1hfib7a000ed3fb00c41500a8febc9003eag0fb00eb380da61h0d0e0cbc0d2a00he&856=((b8+r8)-93-67)+(b7+(18)+(18))+(b8+(58)+(58))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-Double Pointing Out and Double Fitting In can work together. In the board below, one of the wing, 85, is pointed out by Double Pointer of 7 in 76 and 43, then Double Fitter of 9 fits into 43 and 43 and 51, finally Double Fitter of 8 fits into 51 and the other wing, 59, reveal the angel 7 at 58.
-<br>
+双推和双敲可以并用，下图中双翼在宫5和列5的59和85，列4的双7敲85，链行4的双9到51，再链宫5的双8到59，得解587。<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=480&sudoku=h00e4c2ga5dcgb1hfib7a000ed3fb00c41500a8febc9003ea00fb00eb380da61h0d0e0cbc0d2a00he&587=((b5+c5)-24-18)-(c3-32)+(r4+(36)+(36))+(b5+(82)+(82))" style="border: 6px solid white; box-shadow: rgb(136, 136, 136) 0px 0px 6px; margin: 10px;"></iframe>
 </div>
-There you have it, exclusively from 推敲数独, the Angel's Wings technique, so beautiful so powerful yet easy to spot, it will downgrade puzzles used to be considered diabolical.<br>
+这就是我的独门秘技，双推双敲破双翼，通过观察解骨灰级谜题不再遥不可及。<br>
 <br>
-Enjoy.<br>
+谢谢观赏。<br>
 <br>
 <br>
 <div class="index" style="clear: both; text-align: left;">

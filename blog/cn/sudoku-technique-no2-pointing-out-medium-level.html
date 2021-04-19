@@ -18,55 +18,50 @@
 </h1>
 <h2 class="date-header"><span>Friday, 8 April 2016</span></h2>
 <h3 class="post-title entry-title" itemprop="name">
-Sudoku Technique No.2<br> Pointing Out - Medium Level
+数独技巧之二
 </h3>
 <div class="language" style="text-align: right;">
 <span style="font-size: 18px;">&nbsp;<a href="../en/sudoku-technique-no2-pointing-out-medium-level.html">English Version</a></span>
 </div>
-Let's continue with Pointing Out technique, in a higher level.<br>
 <br>
-Look at the board below, focusing on row 4. There are six empty cells in it: 42, 43, 51, 52, 53 and 62 (Please see&nbsp;<a href="./sudoku-rules-and-terminologies.html">Sudoku Rules and Terminology</a>&nbsp;on how to locate cells). Notice there are two 4s around row 4, 54 can point out 51, 52 and 53 because they are in the same box, and 32 can point out 62 because they are in the same column, but we still don't know where 4 goes since there are still two cells 42 and 43 left in row 4.
+数独技巧只有两种：推法和敲法。<br>
+继续介绍敲法的中级。<br>
+<br>
+请看下图，目标锁定行4。行4中有六个空格：42，43，51，52，53和62。注意到行4周围的两个4，虽然54可以敲掉51，52和53因为它们同在宫5，32可以敲掉62因为它们同在列8，但是行4中还有两个空格42和43。<br>
 <div class="separator" style="clear: both; text-align: center;">
-<iframe width="320px" height="320px" src="../showMe.html?delay=30&sudoku=0005b8f4a60200000010e00000070000020905040000000030000000007010003a000050000010000&434=((r4+r4)-54-32)-(b1-32)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
+<iframe width="320px" height="320px" src="../showMe.html?delay=10&sudoku=0005b8f4a60200000010e00000070000020905040000000030000000007010003a000050000010000&434=((r4+r4)-54-32)-(b1-32)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-Well, turns out, not only cells can be pointers, units can be pointers too! Let's look at box 1, notice the empty cells in box 1 form a letter T. Now beam light from 32 to box 1, the three cells 11, 12, and 13 that form the upper part of the T are pointed out, leaving the two cells 15 and 18 that form lower part of the T. We don't know which one is 4 but we sure know that 4 in box 1 must be in column 2, so now box 1 can be used as a pointer, which can point out 42 in our target row 4, leaving 43 the only cell left. Click on the board, if you haven't yet, to see the animations.<br>
+请观察宫1，注意其中空格组成的形状。当32敲掉宫1中的11，12和13后，宫1中的4就只能在15和18，也就是只能在列2中，那么现在宫1就可以用来做锤敲掉行4中的42了。不单数字，单元同样可以当锤使！点击上图完成动画演示。<br>
 <br>
-Another example, box pointer pointing to column.
+下图是另一个例子，宫6做锤敲列5：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=360&sudoku=0005b8f4a60200000010e00000070d0002c905040000000030000000007010003a000050000010000&525=c5-21-45-95-(b6-45)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-More examples, here is a box pointer pointing to box:
-<br>
+更多例子，宫4做锤敲宫6：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=420&sudoku=1ec2f8dgi07000030h0h0c0g60a50200001g00007000080g000000g40030000cb0000g84060700000&684=b6-31-96-(b4-72)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-Of course columns and rows can be unit pointers too, here is an example of column-row pointing:</div>
-<br>
+往往被忽视的是行和列也可以做锤，下图是列1做锤敲行1：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=480&sudoku=b00gh00310a702c00008c0000gb600300000g00008200100b00000e4ahci72f300510000h00600000&319=r1-83-(c1)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-Another example of column-row pointing:
-<br>
+另一个行列锤的例子：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=540&sudoku=000bae03620a03fedh5cf0000b17eca802f00100f0ce0f00ce0a803f90b04ae000501f0ca0e60ch0b&287=c5-(r7)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-A special case of column-row pointing, cross pointing:
-<br>
+行列锤的特例，交叉锤：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=600&sudoku=cf000020709bf3g0000000b0c0600004bf106040000b020a0f00g0e1f00083b7bc5h60000002acgfe&355=c8-84-(r2-71)" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-An example with a box pointing, a column-row pointing and a cross pointing:
-<br>
+下图是一个复杂些的例子，包含了宫1锤敲行8，行5锤敲列9，最后是列9交叉锤敲行8：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=660&sudoku=4060c0a02e0c8010f070a00000c01000030ecfb74e00a050ca0fb0f3000051020ea6c000a00000b3f&968=r8-(b1)-(c9-24-(r5))" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-The beauty of unit pointers is, they relay:
-<br>
+单元锤的至高境界，连环锤：<br>
 <div class="separator" style="clear: both; text-align: center;">
 <iframe width="320px" height="320px" src="../showMe.html?delay=720&sudoku=800g00f0iid360b0g007009020c050007000000045700000100030e010g0068d0850001g0900a0400&132=b1-37-(b7-(b9-37))" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
-That's it for unit pointing, now you can use it to solve Medium level Sudoku puzzles.
-<br>
+这就是敲法的中极，可以用来解中级谜题。<br>
 <br>
 <div class="index" style="clear: both; text-align: left;">
 &nbsp;<a href="./sudoku-rules-and-terminologies.html">数独的规则和术语</a><br>
