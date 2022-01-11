@@ -19,12 +19,12 @@ Touch Sudoku
 Sudoku, Beautifully Solved
 </h3>
 <div class="language" style="text-align: right;">
-<span style="font-size: 18px;">&nbsp;<a href="../cn/touch-sudoku.html">中文版</a>
+<span style="font-size: 18px;">&nbsp;<a id="lang" href="../cn/touch-sudoku.html">中文版</a>
 </div>
 Each solution is explained with beautiful animations, click on the game to start.<br>
 <br>
 <div class="separator" style="clear: both; text-align: center;">
-<iframe width="320px" height="320px" src="../showMe.html?delay=300&sudoku=000508040602000000100000000700000209050400000000300000000070100030000050000010000&195=b1-21-45" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
+<iframe id="board" width="320px" height="320px" src="../showMe.html" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
 </div>
 <div style="clear: both;"></div>
 <br>
@@ -41,5 +41,12 @@ Each solution is explained with beautiful animations, click on the game to start
 &nbsp;<a href="./sudoku-technique-no7-fitting-in-expert-level.html">Technique No.7 Fitting In - Expert Level</a><br>
 <br>
 <div style="clear: both;"></div>
+<script>
+    window.onload = function() {
+        let param = window.location.search || "?delay=300&sudoku=000508040602000000100000000700000209050400000000300000000070100030000050000010000&195=b1-21-45"
+        document.getElementById("lang").href = "../cn/touch-sudoku.html" + param
+        document.getElementById("board").src = "../showMe.html" + param
+    }
+</script>
 </body>
 </html>
