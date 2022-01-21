@@ -24,7 +24,7 @@ Sudoku, Beautifully Solved
 Each solution is explained with beautiful animations, click on the game to start.<br>
 <br>
 <div class="separator" style="clear: both; text-align: center;">
-<iframe id="board" width="320px" height="320px" src="../showMe.html" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
+<div id="board"></div>
 </div>
 <div style="clear: both;"></div>
 <br>
@@ -45,7 +45,7 @@ Each solution is explained with beautiful animations, click on the game to start
     window.onload = function() {
         let param = window.location.search || "?delay=300&sudoku=000508040602000000100000000700000209050400000000300000000070100030000050000010000&195=b1-21-45"
         document.getElementById("lang").href = "../cn/touch-sudoku.html" + param
-        document.getElementById("board").src = "../showMe.html" + param
+        document.getElementById("board").innerHTML = '<iframe id="board" width="320px" height="320px" src="../showMe.html' + param + '" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>'
     }
 </script>
 </body>
