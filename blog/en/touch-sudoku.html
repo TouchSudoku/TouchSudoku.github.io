@@ -8,6 +8,7 @@
 <link rel="manifest" href="../../site.webmanifest">
 <title>Sudoku, Beautifully Solved</title>
 <link rel="stylesheet" href="../css/main.css" type="text/css">
+<script type="text/javascript" src="../../releases/Solution.js"></script>
 </head>
 <body>
 <h1 class="title">
@@ -21,31 +22,52 @@ Sudoku, Beautifully Solved
 <div class="language" style="text-align: right;">
 <span style="font-size: 18px;">&nbsp;<a id="lang" href="../cn/touch-sudoku.html">中文版</a>
 </div>
-Each solution is explained with beautiful animations, click on the game to start.<br>
+Next solution is resolved by <a id="technique-used"></a>, click on the board to see the logic explained with beautiful animations.<br>
 <br>
 <div class="separator" style="clear: both; text-align: center;">
 <div id="board"></div>
 </div>
 <div style="clear: both;"></div>
 <br>
-&nbsp;<a href="./sudoku-rules-and-terminologies.html">Sudoku Rules and Terminologies</a><br>
-&nbsp;<a href="./sudoku-technique-no1-pointing-out-easy-level.html">Technique No.1 Pointing Out - Easy Level</a><br>
+&nbsp;<a id="technique-no0" href="./sudoku-rules-and-terminologies.html">Sudoku Rules</a><br>
+&nbsp;<a id="technique-no1" href="./sudoku-technique-no1-pointing-out-easy-level.html">Technique No.1 Pointing Out - Easy Level</a><br>
 <br>
-&nbsp;<a href="./sudoku-technique-no2-pointing-out-medium-level.html">Technique No.2 Pointing Out - Medium Level</a><br>
-&nbsp;<a href="./sudoku-technique-no3-fitting-in-medium-level.html">Technique No.3 Fitting In - Medium Level</a><br>
+&nbsp;<a id="technique-no2" href="./sudoku-technique-no2-pointing-out-medium-level.html">Technique No.2 Pointing Out - Medium Level</a><br>
+&nbsp;<a id="technique-no3" href="./sudoku-technique-no3-fitting-in-medium-level.html">Technique No.3 Fitting In - Medium Level</a><br>
 <br>
-&nbsp;<a href="./sudoku-technique-no4-fitting-in-hard-level.html">Technique No.4 Fitting In - Hard Level</a><br>
-&nbsp;<a href="./sudoku-technique-no5-pointing-out-hard-level.html">Technique No.5 Pointing Out - Hard Level</a><br>
+&nbsp;<a id="technique-no4" href="./sudoku-technique-no4-fitting-in-hard-level.html">Technique No.4 Fitting In - Hard Level</a><br>
+&nbsp;<a id="technique-no5" href="./sudoku-technique-no5-pointing-out-hard-level.html">Technique No.5 Pointing Out - Hard Level</a><br>
 <br>
-&nbsp;<a href="./sudoku-technique-no6-pointing-out-expert-level.html">Technique No.6 Pointing Out - Expert Level</a><br>
-&nbsp;<a href="./sudoku-technique-no7-fitting-in-expert-level.html">Technique No.7 Fitting In - Expert Level</a><br>
+&nbsp;<a id="technique-no6" href="./sudoku-technique-no6-pointing-out-expert-level.html">Technique No.6 Pointing Out - Expert Level</a><br>
+&nbsp;<a id="technique-no7" href="./sudoku-technique-no7-fitting-in-expert-level.html">Technique No.7 Fitting In - Expert Level</a><br>
 <br>
 <div style="clear: both;"></div>
 <script>
     window.onload = function() {
-        let param = window.location.search || "?delay=300&sudoku=000508040602000000100000000700000209050400000000300000000070100030000050000010000&195=b1-21-45"
-        document.getElementById("lang").href = "../cn/touch-sudoku.html" + param
-        document.getElementById("board").innerHTML = '<iframe id="board" width="320px" height="320px" src="../showMe.html' + param + '" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>'
+        const search = window.location.search;
+        document.getElementById("lang").href += search
+        const params = new URLSearchParams(
+            search || "?sudoku=dhfi7a23ee1b0cdg00icgb00a40aie4b83fg76hca00bd2dc0000a0hbi56cdg1fg410b0ec3ea0d0f0b&859=(c5+r8)-17-(b6)"
+        )
+        var sudoku = "dhfi7a23ee1b0cdg00icgb00a40aie4b83fg76hca00bd2dc0000a0hbi56cdg1fg410b0ec3ea0d0f0b"
+        var solution = "859=(c5+r8)-17-(b6)"
+        var technique = 6
+        if (params.has("sudoku")) for (const param of params) {
+            if (param[0] == "sudoku") {
+                sudoku = param[1];
+                technique = -1;
+            } else if (param[0].match(/^[1-9]{3}$/)) {
+                solution = param[0] + "=" + param[1].replaceAll(' ', '+');
+                technique = Solution.rate(solution);
+            }
+        }
+        if (technique < 0) { /* TODO handle error */ technique = 0 }
+        document.getElementById("technique-used").href = document.getElementById("technique-no" + technique).href;
+        document.getElementById("technique-used").text = document.getElementById("technique-no" + technique).text;
+        document.getElementById("board").innerHTML = '<iframe width="320px" height="320px" src="../showMe.html'
+            + "?sudoku=" + sudoku
+            + "&" + solution
+            + '" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>';
     }
 </script>
 </body>
