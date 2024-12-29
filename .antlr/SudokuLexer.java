@@ -1,4 +1,4 @@
-// Generated from /Users/dhan/Documents/GitHub/TouchSudoku.github.io/Sudoku.g4 by ANTLR 4.7.1
+// Generated from /Users/dhan/Documents/GitHub/TouchSudoku.github.io/Sudoku.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -8,9 +8,9 @@ import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class SudokuLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -26,18 +26,27 @@ public class SudokuLexer extends Lexer {
 		"DEFAULT_MODE"
 	};
 
-	public static final String[] ruleNames = {
-		"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "NUM", "BOX", "COL", "ROW", 
-		"CELL", "ANS", "PUZZLE", "WS"
-	};
+	private static String[] makeRuleNames() {
+		return new String[] {
+			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "NUM", "BOX", "COL", 
+			"ROW", "CELL", "ANS", "PUZZLE", "WS"
+		};
+	}
+	public static final String[] ruleNames = makeRuleNames();
 
-	private static final String[] _LITERAL_NAMES = {
-		null, "'&'", "'='", "'-'", "'+'", "'('", "')'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, null, null, null, "NUM", "BOX", "COL", "ROW", 
-		"CELL", "ANS", "PUZZLE", "WS"
-	};
+	private static String[] makeLiteralNames() {
+		return new String[] {
+			null, "'&'", "'='", "'-'", "'+'", "'('", "')'"
+		};
+	}
+	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+	private static String[] makeSymbolicNames() {
+		return new String[] {
+			null, null, null, null, null, null, null, "NUM", "BOX", "COL", "ROW", 
+			"CELL", "ANS", "PUZZLE", "WS"
+		};
+	}
+	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**
@@ -96,26 +105,49 @@ public class SudokuLexer extends Lexer {
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\20H\b\1\4\2\t\2\4"+
-		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
-		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\3\2\3\3\3\3\3\4\3\4\3\5\3"+
-		"\5\3\6\3\6\3\7\3\7\3\b\3\b\3\t\3\t\3\t\3\n\3\n\3\n\3\13\3\13\3\13\3\f"+
-		"\3\f\3\f\3\r\3\r\3\r\3\16\6\16>\n\16\r\16\16\16?\3\17\6\17C\n\17\r\17"+
-		"\16\17D\3\17\3\17\2\2\20\3\3\5\4\7\5\t\6\13\7\r\b\17\t\21\n\23\13\25\f"+
-		"\27\r\31\16\33\17\35\20\3\2\5\3\2\63;\4\2\62;cl\5\2\13\f\17\17\"\"\2I"+
-		"\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2"+
-		"\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\2\27\3\2\2\2"+
-		"\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2\2\3\37\3\2\2\2\5!\3\2\2\2\7#\3\2"+
-		"\2\2\t%\3\2\2\2\13\'\3\2\2\2\r)\3\2\2\2\17+\3\2\2\2\21-\3\2\2\2\23\60"+
-		"\3\2\2\2\25\63\3\2\2\2\27\66\3\2\2\2\319\3\2\2\2\33=\3\2\2\2\35B\3\2\2"+
-		"\2\37 \7(\2\2 \4\3\2\2\2!\"\7?\2\2\"\6\3\2\2\2#$\7/\2\2$\b\3\2\2\2%&\7"+
-		"-\2\2&\n\3\2\2\2\'(\7*\2\2(\f\3\2\2\2)*\7+\2\2*\16\3\2\2\2+,\t\2\2\2,"+
-		"\20\3\2\2\2-.\7d\2\2./\5\17\b\2/\22\3\2\2\2\60\61\7e\2\2\61\62\5\17\b"+
-		"\2\62\24\3\2\2\2\63\64\7t\2\2\64\65\5\17\b\2\65\26\3\2\2\2\66\67\5\17"+
-		"\b\2\678\5\17\b\28\30\3\2\2\29:\5\27\f\2:;\5\17\b\2;\32\3\2\2\2<>\t\3"+
-		"\2\2=<\3\2\2\2>?\3\2\2\2?=\3\2\2\2?@\3\2\2\2@\34\3\2\2\2AC\t\4\2\2BA\3"+
-		"\2\2\2CD\3\2\2\2DB\3\2\2\2DE\3\2\2\2EF\3\2\2\2FG\b\17\2\2G\36\3\2\2\2"+
-		"\5\2?D\3\b\2\2";
+		"\u0004\u0000\u000eF\u0006\uffff\uffff\u0002\u0000\u0007\u0000\u0002\u0001"+
+		"\u0007\u0001\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004"+
+		"\u0007\u0004\u0002\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007"+
+		"\u0007\u0007\u0002\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b"+
+		"\u0007\u000b\u0002\f\u0007\f\u0002\r\u0007\r\u0001\u0000\u0001\u0000\u0001"+
+		"\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001"+
+		"\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001\b\u0001\t\u0001\t"+
+		"\u0001\t\u0001\n\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001"+
+		"\f\u0004\f<\b\f\u000b\f\f\f=\u0001\r\u0004\rA\b\r\u000b\r\f\rB\u0001\r"+
+		"\u0001\r\u0000\u0000\u000e\u0001\u0001\u0003\u0002\u0005\u0003\u0007\u0004"+
+		"\t\u0005\u000b\u0006\r\u0007\u000f\b\u0011\t\u0013\n\u0015\u000b\u0017"+
+		"\f\u0019\r\u001b\u000e\u0001\u0000\u0003\u0001\u000019\u0002\u000009a"+
+		"j\u0003\u0000\t\n\r\r  G\u0000\u0001\u0001\u0000\u0000\u0000\u0000\u0003"+
+		"\u0001\u0000\u0000\u0000\u0000\u0005\u0001\u0000\u0000\u0000\u0000\u0007"+
+		"\u0001\u0000\u0000\u0000\u0000\t\u0001\u0000\u0000\u0000\u0000\u000b\u0001"+
+		"\u0000\u0000\u0000\u0000\r\u0001\u0000\u0000\u0000\u0000\u000f\u0001\u0000"+
+		"\u0000\u0000\u0000\u0011\u0001\u0000\u0000\u0000\u0000\u0013\u0001\u0000"+
+		"\u0000\u0000\u0000\u0015\u0001\u0000\u0000\u0000\u0000\u0017\u0001\u0000"+
+		"\u0000\u0000\u0000\u0019\u0001\u0000\u0000\u0000\u0000\u001b\u0001\u0000"+
+		"\u0000\u0000\u0001\u001d\u0001\u0000\u0000\u0000\u0003\u001f\u0001\u0000"+
+		"\u0000\u0000\u0005!\u0001\u0000\u0000\u0000\u0007#\u0001\u0000\u0000\u0000"+
+		"\t%\u0001\u0000\u0000\u0000\u000b\'\u0001\u0000\u0000\u0000\r)\u0001\u0000"+
+		"\u0000\u0000\u000f+\u0001\u0000\u0000\u0000\u0011.\u0001\u0000\u0000\u0000"+
+		"\u00131\u0001\u0000\u0000\u0000\u00154\u0001\u0000\u0000\u0000\u00177"+
+		"\u0001\u0000\u0000\u0000\u0019;\u0001\u0000\u0000\u0000\u001b@\u0001\u0000"+
+		"\u0000\u0000\u001d\u001e\u0005&\u0000\u0000\u001e\u0002\u0001\u0000\u0000"+
+		"\u0000\u001f \u0005=\u0000\u0000 \u0004\u0001\u0000\u0000\u0000!\"\u0005"+
+		"-\u0000\u0000\"\u0006\u0001\u0000\u0000\u0000#$\u0005+\u0000\u0000$\b"+
+		"\u0001\u0000\u0000\u0000%&\u0005(\u0000\u0000&\n\u0001\u0000\u0000\u0000"+
+		"\'(\u0005)\u0000\u0000(\f\u0001\u0000\u0000\u0000)*\u0007\u0000\u0000"+
+		"\u0000*\u000e\u0001\u0000\u0000\u0000+,\u0005b\u0000\u0000,-\u0003\r\u0006"+
+		"\u0000-\u0010\u0001\u0000\u0000\u0000./\u0005c\u0000\u0000/0\u0003\r\u0006"+
+		"\u00000\u0012\u0001\u0000\u0000\u000012\u0005r\u0000\u000023\u0003\r\u0006"+
+		"\u00003\u0014\u0001\u0000\u0000\u000045\u0003\r\u0006\u000056\u0003\r"+
+		"\u0006\u00006\u0016\u0001\u0000\u0000\u000078\u0003\u0015\n\u000089\u0003"+
+		"\r\u0006\u00009\u0018\u0001\u0000\u0000\u0000:<\u0007\u0001\u0000\u0000"+
+		";:\u0001\u0000\u0000\u0000<=\u0001\u0000\u0000\u0000=;\u0001\u0000\u0000"+
+		"\u0000=>\u0001\u0000\u0000\u0000>\u001a\u0001\u0000\u0000\u0000?A\u0007"+
+		"\u0002\u0000\u0000@?\u0001\u0000\u0000\u0000AB\u0001\u0000\u0000\u0000"+
+		"B@\u0001\u0000\u0000\u0000BC\u0001\u0000\u0000\u0000CD\u0001\u0000\u0000"+
+		"\u0000DE\u0006\r\u0000\u0000E\u001c\u0001\u0000\u0000\u0000\u0003\u0000"+
+		"=B\u0001\u0006\u0000\u0000";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
