@@ -10,7 +10,7 @@
 A standard Sudoku puzzle consists of a 9x9 grid divided into 3x3 boxes. The grid has 9 **boxes**, 9 **rows**, and 9 **columns**, totaling 27 **units** and 81 **cells**. The objective is to fill all the **cells** with **numbers** from **1** to **9**, ensuring that each **number** appears exactly once in each **unit**.
 
 ### How Sudoku Logic Works
-There are only 2 components in Sudoku Logic: **Pointing Out** and **Filling In**, both are baased on target units.
+There are only 2 components in Sudoku Logic: **Pointing Out** and **Filling In**, both are based on target units.
 - **Pointing Out** is to point out (eliminate) possible cells of the pointer number from target units, until one empty cell left.
 - **Filling In** is to fill in the filler numbers in possible cells of target units, until one empty cell left.
 
