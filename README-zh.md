@@ -46,6 +46,7 @@
    &nbsp;
 
 更多技巧请查看 [Touch Sudoku Blog](https://touchsudoku.github.io/blog/cn/)
+更多技巧请查看 [Touch Sudoku Blog](https://touchsudoku.github.io/blog/cn/)
 
 
 <!-- [推敲数独下载](https://play.google.com/store/apps/details?id=com.touchsudoku.app) -->
