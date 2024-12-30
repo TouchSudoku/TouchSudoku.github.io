@@ -9,8 +9,8 @@
 ### 数独术语
 标准的数独谜题由一个 9x9 的方格组成，分为 3x3 个**宫**。9 个**宫**、9 个**行** 和 9 个**列**，共 27 个**单元** 81 个**格**。解谜是用 **1** 到 **9** 的 **数字** 填满所有的**格**，确保每个**数字** 在每个**单元** 中恰好出现一次。
 
-<img src="blog/img/IMG_20160331_175942.png" alt="Sudoku Grid" width="320" height="320">
-<img src="blog/img/IMG_20160331_180421.png" alt="Sudoku Solved" width="320" height="320">
+<img src="blog/img/IMG_20160331_175942.png" alt="Sudoku Grid" width="240" height="240">
+<img src="blog/img/IMG_20160331_180421.png" alt="Sudoku Solved" width="240" height="240">
 
 ### 数独逻辑如何工作
 数独逻辑只有两个组成部分：**推** 和 **敲**，这两者都是基于目标单元。
@@ -21,9 +21,9 @@
 
 1. **唯一数**：单元中只剩下唯一一个空格。<br/>
    谜题中点击单元的唯一空格以选择宫，水平或垂直滑动以选择行或列作为目标单元。目标单元在数字格中以浅绿色高亮显示，唯一的空格以绿色显示。然后点击网格中与缺失数字对应的任何数字格，将其选择为**敲击数**，该格以橙色高亮显示，**敲击数**被填入目标单元中唯一的空格。
-   <img src="blog/img/IMG_20160331_180232.png" alt="Single Candidates in Box" width="320" height="320">
-   <img src="blog/img/IMG_20160331_180336.png" alt="Single Candidates in Row" width="320" height="320">
-   <img src="blog/img/IMG_20160331_180405.png" alt="Single Candidates in Column" width="320" height="320">
+   <img src="blog/img/IMG_20160331_180232.png" alt="Single Candidates in Box" width="240" height="240">
+   <img src="blog/img/IMG_20160331_180336.png" alt="Single Candidates in Row" width="240" height="240">
+   <img src="blog/img/IMG_20160331_180405.png" alt="Single Candidates in Column" width="240" height="240">
    [More Details](https://touchsudoku.github.io/blog/cn/sudoku-rules-and-terminologies.html)
    &nbsp;
 
