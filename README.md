@@ -9,8 +9,8 @@
 ### Sudoku Terminology
 A standard Sudoku puzzle consists of a 9x9 grid divided into 3x3 boxes. The grid has 9 **boxes**, 9 **rows**, and 9 **columns**, totaling 27 **units** and 81 **cells**. The objective is to fill all the **cells** with **numbers** from **1** to **9**, ensuring that each **number** appears exactly once in each **unit**.
 
-![Sudoku Grid](blog/img/IMG_20160331_175942.png)
-![Sudoku Solved](blog/img/IMG_20160331_180421.png)
+![Sudoku Grid](blog/img/IMG_20160331_175942.png){:width="320" height="320"}
+![Sudoku Solved](blog/img/IMG_20160331_180421.png){:width="320" height="320"}
 
 ### How Sudoku Logic Works
 There are only 2 components in Sudoku Logic: **Pointing Out** and **Filling In**, both are based on target units.
@@ -21,9 +21,9 @@ Here are how to apply them to a puzzle:
 
 1. **Single Candidates**: This technique is used when only one empty cell is left in a unit.<br/>
    Tap the only empty cell to select the unit, or swipe horizontally or vertically to select a row or column as a target unit. The target unit is highlighted in light green for number cells, leaving the only empty cell in green. Then tap any number cell in the grid that corresponds to the missing number to select it as a **pointer**, which is highlighted in orange. The pointer number is then filled into the only empty cell in the target unit.
-   ![Single Candidates in Box](blog/img/IMG_20160331_180232.png)
-   ![Single Candidates in Row](blog/img/IMG_20160331_180336.png)
-   ![Single Candidates in Column](blog/img/IMG_20160331_180405.png)
+   ![Single Candidates in Box](blog/img/IMG_20160331_180232.png){:width="320" height="320"}
+   ![Single Candidates in Row](blog/img/IMG_20160331_180336.png){:width="320" height="320"}
+   ![Single Candidates in Column](blog/img/IMG_20160331_180405.png){:width="320" height="320"}
    [More Details](https://touchsudoku.github.io/blog/en/sudoku-rules-and-terminologies.html)
    &nbsp;
 
