@@ -1,4 +1,4 @@
-# <div style="display: flex; align-items: center;"><img src="app.png" alt="Touch Sudoku" style="height: 1.5em; margin-right: 0.5em;"> Touch Sudoku</div>
+# <div style="display: flex; align-items: center;"><img src="favicon-32x32.png" alt="Touch Sudoku" style="height: 1.5em; margin-right: 0.5em;"> Touch Sudoku</div>
 
 <div style="text-align: right; margin-top: 10px;">
     <a href="README-zh.md" style="text-decoration: none; color: #007bff;">中文</a>
@@ -18,11 +18,12 @@ Here are how to apply them to a puzzle:
 
 1. **Single Candidates**: This technique is used when only one empty cell is left in a unit.<br/>
    Tap the only empty cell to select the unit, or swipe horizontally or vertically to select a row or column as a target unit. The target unit is highlighted in light green for number cells, leaving the only empty cell in green. Then tap any number cell in the grid that corresponds to the missing number to select it as a **pointer**, which is highlighted in orange. The pointer number is then filled into the only empty cell in the target unit.
+   [More Details](https://touchsudoku.github.io/blog/en/sudoku-rules-and-terminologies.html)
    &nbsp;
 
 2. **Hidden Singles**: This technique is applied when a number can only fit in one cell of a unit.<br/>
    Tap one of the empty cells in the box, or swipe horizontally or vertically to select a row or column as a target unit. The target unit is highlighted in light green for number cells, leaving multiple empty cells in green. Then tap a number cell in the grid to select it as a pointer, which is highlighted in orange. The pointer sends out light-yellow beams to target units **Pointing Out** the number from the green cells by coloring them yellow-green. Tap another cell with the same number to add more pointers if needed, until only one green cell is left in the target unit. The pointer number is then filled into the only empty cell in the target unit.
-   <iframe width="320px" height="320px" src="../showMe.html?delay=300&amp;sudoku=000508040602000000100000000700000209050400000000300000000070100030000050000010000&amp;195=b1-21-45" style="border: solid white 6px; box-shadow: 0px 0px 6px #888888; margin: 10px;"></iframe>
+   [Live Demo](https://touchsudoku.github.io/blog/en/sudoku-technique-no1-pointing-out-easy-level.html)
    &nbsp;
 
 3. **Pointing Pairs**: This technique allows units to act as pointers.<br/>
@@ -32,15 +33,16 @@ Here are how to apply them to a puzzle:
    To solve using **Pointing Pairs**, select the target unit first, then tap one of the empty cells in the non-adjacent unit to select it. It can be a pointer unit already; add a pointer for the unit to make it a pointer if needed.<br/>
    Note that unit pointers usually have 2 pointer cells but can possibly have 3 pointer cells.<br/>
    Unit pointers relay, meaning they can make another unit a pointer, and so on until they reach the target unit.
+   [Live Demo](https://touchsudoku.github.io/blog/en/sudoku-technique-no2-pointing-out-medium-level.html)
    &nbsp;
 
 4. **Naked Singles**: This technique is used when a cell can only contain one number.<br/>
    Tap one of the empty cells in the box, or swipe horizontally or vertically to select a row or column as a target unit. The target unit is highlighted in light green for number cells, leaving multiple empty cells in green. Then tap and hold a number cell in the grid to select it as a **filler**, which is highlighted in blue. The filler number is **Filling In** the target unit and takes the place of one of the green cells by coloring it shaded purple-blue. Tap another cell with a different number to add more fillers if needed, until all but one green cell is filled in the target unit. Finally, tap the cell with the missing number to fill it into the only empty cell in the target unit.
+   [Live Demo](https://touchsudoku.github.io/blog/en/sudoku-technique-no3-fitting-in-medium-level.html)
+   &nbsp;
 
-Enjoy **Touch Sudoku** for the fun of solving puzzles using **Sudoku Logic**!
+More techniques see [Touch Sudoku Blog](https://touchsudoku.github.io/blog/en/)
 
-# Old Blog
-[Touch Sudoku](http://touchsudoku.github.io/)
 
 <!-- [Touch Sudoku Download](https://play.google.com/store/apps/details?id=com.touchsudoku.app) -->
 
