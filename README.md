@@ -51,8 +51,7 @@ Here are how to apply them to a puzzle:
    [Live Demo](https://touchsudoku.github.io/blog/en/sudoku-technique-no3-fitting-in-medium-level.html)
    &nbsp;
 
-More techniques see [Touch Sudoku Blog](https://touchsudoku.github.io/blog/en/)
-More techniques see [Touch Sudoku Blog](https://touchsudoku.github.io/blog/en/)
+More techniques see [Touch Sudoku Blog](https://touchsudoku.github.io/blog/en/sudoku-beautifully-solved.html)
 
 
 <!-- [Touch Sudoku Download](https://play.google.com/store/apps/details?id=com.touchsudoku.app) -->
