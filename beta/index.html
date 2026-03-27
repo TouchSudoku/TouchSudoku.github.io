@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Touch Sudoku</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Sudoku" />
+  <link rel="apple-touch-icon" href="./icons/192.png" />
+  <script type="module" crossorigin src="./assets/index-DwHXDRVc.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DnNYjmqk.css">
+<link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
+<body>
+  <div id="app"></div>
+  <script>
+    // Safari PWA ignores user-scalable=no — block pinch explicitly
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length > 1) e.preventDefault()
+    }, { passive: false })
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault()
+    }, { passive: false })
+  </script>
+</body>
+</html>
