@@ -1,0 +1,172 @@
+name: Check Record PR
+
+on:
+  pull_request:
+    branches: [records]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  verify-and-merge:
+    runs-on: ubuntu-latest
+    steps:
+      # Always check out the BASE branch — trusted source of the script.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get changed files
+        id: changed
+        run: |
+          BASE=${{ github.event.pull_request.base.sha }}
+          HEAD=${{ github.event.pull_request.head.sha }}
+          git fetch origin "$HEAD"
+          FILES=$(git diff --name-only "$BASE" "$HEAD")
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Check exactly one record file changed
+        id: single-record
+        run: |
+          FILES="${{ steps.changed.outputs.files }}"
+          RECORD_FILES=$(echo "$FILES" | grep '^records/' || true)
+          OTHER_FILES=$(echo "$FILES" | grep -v '^records/' || true)
+          COUNT=$(echo "$RECORD_FILES" | grep -c . || true)
+
+          if [ -n "$OTHER_FILES" ]; then
+            echo "::error::PR contains changes outside records/: $OTHER_FILES"
+            exit 1
+          fi
+          if [ "$COUNT" -ne 1 ]; then
+            echo "::error::PR must change exactly 1 record file, found $COUNT"
+            exit 1
+          fi
+
+          RECORD_FILE=$(echo "$RECORD_FILES" | head -1)
+          BASENAME=$(basename "$RECORD_FILE")
+          echo "record_file=$RECORD_FILE" >> $GITHUB_OUTPUT
+          echo "basename=$BASENAME" >> $GITHUB_OUTPUT
+
+      - name: Check filename is valid completed puzzle string
+        run: |
+          BASENAME="${{ steps.single-record.outputs.basename }}"
+          if ! echo "$BASENAME" | grep -qE '^[1-9a-i]{81}$'; then
+            echo "::error::Filename '$BASENAME' is not 81 chars of [1-9a-i]"
+            exit 1
+          fi
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Extract and verify new record block from PR
+        id: verify
+        run: |
+          RECORD_FILE="${{ steps.single-record.outputs.record_file }}"
+          HEAD=${{ github.event.pull_request.head.sha }}
+
+          # Get the PR's version of the file
+          git show "$HEAD:$RECORD_FILE" > /tmp/pr-record 2>/dev/null || true
+
+          # Get the current base version (may not exist yet)
+          git show "HEAD:$RECORD_FILE" > /tmp/base-record 2>/dev/null || true
+
+          # Extract the new block: lines in PR file not present in base file.
+          # The new block is the first block in the PR file whose first line
+          # is absent from the base file.
+          NEW_BLOCK=$(bun -e "
+            const fs = require('fs')
+            const pr   = fs.existsSync('/tmp/pr-record')   ? fs.readFileSync('/tmp/pr-record',   'utf8') : ''
+            const base = fs.existsSync('/tmp/base-record') ? fs.readFileSync('/tmp/base-record', 'utf8') : ''
+            const prBlocks   = pr.trimEnd().split('\n===\n').map(b => b.trim()).filter(Boolean)
+            const baseBlocks = new Set(base.trimEnd().split('\n===\n').map(b => b.trim()).filter(Boolean))
+            const newBlock = prBlocks.find(b => !baseBlocks.has(b))
+            if (!newBlock) { console.error('No new block found in PR'); process.exit(1) }
+            process.stdout.write(newBlock)
+          ")
+
+          echo "$NEW_BLOCK" > /tmp/new-block
+          echo "New block:"
+          cat /tmp/new-block
+
+          # Verify the new block in isolation using check-record
+          # Write it as a standalone single-block record file named by its final puzzle line
+          FINAL_PUZZLE=$(tail -1 /tmp/new-block)
+          echo "$NEW_BLOCK" > "/tmp/$FINAL_PUZZLE"
+          printf '\n' >> "/tmp/$FINAL_PUZZLE"
+          bun run scripts/check-record.ts "/tmp/$FINAL_PUZZLE"
+
+      - name: Merge new block into records branch and close PR
+        run: |
+          RECORD_FILE="${{ steps.single-record.outputs.record_file }}"
+
+          # Build merged file: existing blocks + new block, sorted ASC by T, max 3
+          bun -e "
+            const fs = require('fs')
+            const base     = fs.existsSync('/tmp/base-record') ? fs.readFileSync('/tmp/base-record', 'utf8') : ''
+            const newBlock = fs.readFileSync('/tmp/new-block', 'utf8').trim()
+
+            const blocks = [
+              ...base.trimEnd().split('\n===\n').map(b => b.trim()).filter(Boolean),
+              newBlock,
+            ]
+
+            // Deduplicate by first line (summary), keep lowest T
+            const byLogin = new Map()
+            for (const b of blocks) {
+              const firstLine = b.split('\n')[0]
+              const m = firstLine.match(/,\s*(\d+)\s+touches/)
+              const t = m ? parseInt(m[1]) : Infinity
+              const login = (firstLine.match(/\bby\s+(\S+)$/) || [])[1] || firstLine
+              if (!byLogin.has(login) || t < byLogin.get(login).t) byLogin.set(login, { b, t })
+            }
+
+            const merged = [...byLogin.values()]
+              .sort((a, b) => a.t - b.t)
+              .slice(0, 3)
+              .map(x => x.b)
+              .join('\n===\n') + '\n'
+
+            fs.writeFileSync('$RECORD_FILE', merged)
+            console.log('Merged file written.')
+          "
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$RECORD_FILE"
+          SUMMARY=$(head -1 /tmp/new-block)
+          git commit -m "$SUMMARY"
+          git push origin ${{ github.event.pull_request.base.ref }}
+
+      - name: Close PR (superseded by direct push)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              state: 'closed',
+            })
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '✅ Record verified and merged directly to `records` branch.',
+            })
+
+      - name: Post failure comment
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `❌ Record verification failed — see [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.`,
+            })
