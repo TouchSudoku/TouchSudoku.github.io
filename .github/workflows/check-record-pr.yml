@@ -100,22 +100,20 @@ jobs:
           printf '\n' >> "/tmp/$FINAL_PUZZLE"
           bun run scripts/check-record.ts "/tmp/$FINAL_PUZZLE"
 
-      - name: Merge new block into records branch and close PR
-        run: |
-          RECORD_FILE="${{ steps.single-record.outputs.record_file }}"
-
-          # Build merged file: existing blocks + new block, sorted ASC by T, max 3
-          bun -e "
+      - name: Write merged record to PR branch and merge PR
+        uses: actions/github-script@v7
+        with:
+          script: |
             const fs = require('fs')
             const base     = fs.existsSync('/tmp/base-record') ? fs.readFileSync('/tmp/base-record', 'utf8') : ''
-            const newBlock = fs.readFileSync('/tmp/new-block', 'utf8').trim()
+            const newBlock = fs.readFileSync('/tmp/new-block',  'utf8').trim()
 
             const blocks = [
               ...base.trimEnd().split('\n===\n').map(b => b.trim()).filter(Boolean),
               newBlock,
             ]
 
-            // Deduplicate by first line (summary), keep lowest T
+            // Deduplicate by login, keep lowest T
             const byLogin = new Map()
             for (const b of blocks) {
               const firstLine = b.split('\n')[0]
@@ -131,32 +129,34 @@ jobs:
               .map(x => x.b)
               .join('\n===\n') + '\n'
 
-            fs.writeFileSync('$RECORD_FILE', merged)
-            console.log('Merged file written.')
-          "
+            const recordFile = '${{ steps.single-record.outputs.record_file }}'
+            const prHeadRef  = context.payload.pull_request.head.ref
+            const summary    = newBlock.split('\n')[0]
 
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "$RECORD_FILE"
-          SUMMARY=$(head -1 /tmp/new-block)
-          git commit -m "$SUMMARY"
-          git push origin ${{ github.event.pull_request.base.ref }}
+            // Get current file SHA on the PR branch (needed for update)
+            let fileSha
+            try {
+              const { data } = await github.rest.repos.getContent({
+                owner: context.repo.owner, repo: context.repo.repo,
+                path: recordFile, ref: prHeadRef,
+              })
+              fileSha = data.sha
+            } catch {}
 
-      - name: Close PR (superseded by direct push)
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              state: 'closed',
+            // Write merged content to PR branch
+            await github.rest.repos.createOrUpdateFileContents({
+              owner: context.repo.owner, repo: context.repo.repo,
+              path: recordFile, message: summary, branch: prHeadRef,
+              content: Buffer.from(merged).toString('base64'),
+              ...(fileSha ? { sha: fileSha } : {}),
             })
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: '✅ Record verified and merged directly to `records` branch.',
+
+            // Merge the PR — shows as "Merged" (purple), not "Closed" (red)
+            await github.rest.pulls.merge({
+              owner: context.repo.owner, repo: context.repo.repo,
+              pull_number: context.issue.number,
+              merge_method: 'squash',
+              commit_title: summary,
             })
 
       - name: Post failure comment
