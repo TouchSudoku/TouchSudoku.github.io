@@ -144,12 +144,13 @@ jobs:
             } catch {}
 
             // Write merged content to PR branch
-            await github.rest.repos.createOrUpdateFileContents({
+            const writeRes = await github.rest.repos.createOrUpdateFileContents({
               owner: context.repo.owner, repo: context.repo.repo,
               path: recordFile, message: summary, branch: prHeadRef,
               content: Buffer.from(merged).toString('base64'),
               ...(fileSha ? { sha: fileSha } : {}),
             })
+            const newHeadSha = writeRes.data.commit.sha
 
             // Merge the PR — shows as "Merged" (purple), not "Closed" (red)
             await github.rest.pulls.merge({
@@ -157,6 +158,7 @@ jobs:
               pull_number: context.issue.number,
               merge_method: 'squash',
               commit_title: summary,
+              sha: newHeadSha,
             })
 
       - name: Post failure comment
