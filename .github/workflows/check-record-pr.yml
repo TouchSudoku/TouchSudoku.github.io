@@ -162,6 +162,12 @@ jobs:
               commit_title: summary,
             })
 
+            // Delete the PR branch
+            await github.rest.git.deleteRef({
+              owner: context.repo.owner, repo: context.repo.repo,
+              ref: `heads/${prHeadRef}`,
+            })
+
       - name: Post failure comment
         if: failure()
         uses: actions/github-script@v7
