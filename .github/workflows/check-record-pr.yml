@@ -56,8 +56,8 @@ jobs:
       - name: Check filename is valid completed puzzle string
         run: |
           BASENAME="${{ steps.single-record.outputs.basename }}"
-          if ! echo "$BASENAME" | grep -qE '^[1-9a-i]{81}$'; then
-            echo "::error::Filename '$BASENAME' is not 81 chars of [1-9a-i]"
+          if ! echo "$BASENAME" | grep -qE '^[0-9a-i]{81}$'; then
+            echo "::error::Filename '$BASENAME' is not 81 chars of [0-9a-i]"
             exit 1
           fi
 
@@ -94,11 +94,11 @@ jobs:
           cat /tmp/new-block
 
           # Verify the new block in isolation using check-record
-          # Write it as a standalone single-block record file named by its final puzzle line
-          FINAL_PUZZLE=$(tail -1 /tmp/new-block)
-          echo "$NEW_BLOCK" > "/tmp/$FINAL_PUZZLE"
-          printf '\n' >> "/tmp/$FINAL_PUZZLE"
-          bun run scripts/check-record.ts "/tmp/$FINAL_PUZZLE"
+          # File name = initial puzzle (line 2 of block)
+          INITIAL_PUZZLE=$(sed -n '2p' /tmp/new-block)
+          echo "$NEW_BLOCK" > "/tmp/$INITIAL_PUZZLE"
+          printf '\n' >> "/tmp/$INITIAL_PUZZLE"
+          bun run scripts/check-record.ts "/tmp/$INITIAL_PUZZLE"
 
       - name: Write merged record to PR branch and merge PR
         uses: actions/github-script@v7

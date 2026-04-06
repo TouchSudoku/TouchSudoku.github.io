@@ -16,21 +16,22 @@
 //   <final-puzzle>\n
 //
 // Rules:
-//   1. File name = final puzzle of first (best) block
+//   1. File name = initial puzzle (line 2) of first (best) block
 //   2. For each block:
-//      a. N = count of [a-i] in final puzzle
-//      b. initial puzzle = final puzzle with [a-i] replaced by '0'
+//      a. N = count of '0' in initial puzzle (cells solved from scratch)
+//      b. initial puzzle matches [0-9a-i]{81} (0 = empty, a-i = URL pre-filled)
 //      c. T = sum of touch counts from move lines
 //      d. TIME ≈ reconstructed from sum of move line times (centisecond precision)
 //      e. Move indices are consecutive 1..M
-//      f. final puzzle is 81 chars of [0-9a-i] with no 0 (fully solved)
+//      f. final puzzle is 81 chars of [1-9a-i] (fully solved, no 0s)
 //   3. Blocks sorted ASC by T
 //   4. Max 3 blocks
 
 import { readFileSync } from 'fs'
 import { basename } from 'path'
 
-const PUZZLE_RE = /^[1-9a-i]{81}$/
+const PUZZLE_RE    = /^[1-9a-i]{81}$/   // final puzzle: fully solved, no 0s
+const INITIAL_RE   = /^[0-9a-i]{81}$/   // initial puzzle: may have 0s or URL pre-fills
 const HEADER_RE = /^(\d+) numbers, (\d+) touches in (\d+)'(\d{2})"(\d{2}) by (\S+)$/
 const MOVE_RE   = /^(\d+): .+ # (\d+)T(\d+)"(\d{2}): .*$/
 
@@ -64,10 +65,18 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
   }
 
   // ── Initial puzzle ───────────────────────────────────────────────────────
-  const expectedInitial = finalLine.replace(/[a-i]/g, '0')
-  if (initialLine !== expectedInitial) {
-    err(`${label}: initial puzzle mismatch\n    expected: ${expectedInitial}\n    got:      ${initialLine}`)
+  if (!INITIAL_RE.test(initialLine)) {
+    err(`${label}: initial puzzle is not 81 chars of [0-9a-i] (got "${initialLine.slice(0, 20)}…")`)
     ok = false
+  }
+  // Every non-zero char in initial must match the final puzzle
+  for (let i = 0; i < 81; i++) {
+    const ic = initialLine[i], fc = finalLine[i]
+    if (ic !== '0' && ic !== fc) {
+      err(`${label}: initial/final mismatch at cell ${i}: initial='${ic}' final='${fc}'`)
+      ok = false
+      break
+    }
   }
 
   // ── Header ───────────────────────────────────────────────────────────────
@@ -83,10 +92,10 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
   const headerSs  = parseInt(hSs)
   const headerCc  = parseInt(hCc)
 
-  // N = count of [a-i] in final puzzle
-  const actualN = (finalLine.match(/[a-i]/g) ?? []).length
+  // N = count of '0' in initial puzzle (cells the user solved from scratch)
+  const actualN = (initialLine.match(/0/g) ?? []).length
   if (headerN !== actualN) {
-    err(`${label}: N=${headerN} but final puzzle has ${actualN} user-filled cells`)
+    err(`${label}: N=${headerN} but initial puzzle has ${actualN} empty cells (0s)`)
     ok = false
   }
 
@@ -178,10 +187,11 @@ function checkRecord(filePath: string): boolean {
     allOk = false
   }
 
-  // File name must equal the final puzzle of the first (best) block
-  const firstFinalLine = blocks[0].split('\n').at(-1) ?? ''
-  if (fileName !== firstFinalLine) {
-    err(`File name does not match final puzzle of first block\n  file:  ${fileName}\n  final: ${firstFinalLine}`)
+  // File name must equal the initial puzzle (line 2) of the first (best) block
+  const firstLines = blocks[0].split('\n')
+  const firstInitialLine = firstLines[1] ?? ''
+  if (fileName !== firstInitialLine) {
+    err(`File name does not match initial puzzle of first block\n  file:    ${fileName}\n  initial: ${firstInitialLine}`)
     allOk = false
   }
 
