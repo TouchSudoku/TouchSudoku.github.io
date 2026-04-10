@@ -131,7 +131,55 @@ jobs:
 
             const recordFile = '${{ steps.single-record.outputs.record_file }}'
             const prHeadRef  = context.payload.pull_request.head.ref
-            const summary    = newBlock.split('\n')[0]
+
+            // Parse block for commit message
+            const lines = newBlock.split('\n')
+            const headerLine = lines[0]
+            const initialPuzzle = lines[1]
+            const moveLines = lines.slice(2, lines.length - 1) // exclude header, initial, and final puzzle
+
+            // Reconstruct puzzle state after each move and extract > 5T moves
+            const MOVE_RE = /^(\d+): ([a-z0-9]+=[a-z0-9\-@,]+) # (\d+)T/
+            let puzzle = initialPuzzle
+            const highlightMoves = []
+
+            for (const line of moveLines) {
+              const m = line.match(MOVE_RE)
+              if (!m) continue
+
+              const moveNum = m[1]
+              const annot = m[2]
+              const touches = parseInt(m[3])
+
+              // Parse annotation key (left of "=") - format: {box}{cell}{digit}
+              const key = annot.split('=')[0]
+              if (key.length >= 3) {
+                const bc = key.substring(0, 2)
+                const digit = parseInt(key[2])
+
+                // Convert bc (box-cell) to grid index
+                const box = parseInt(bc[0]) - 1     // 0-8
+                const cell = parseInt(bc[1]) - 1    // 0-8
+                const i = Math.floor(box / 3) * 3 + Math.floor(cell / 3)
+                const j = (box % 3) * 3 + (cell % 3)
+                const idx = i * 9 + j
+
+                // Update puzzle string: digit 1-9 -> a-i
+                const oldPuzzle = puzzle
+                puzzle = puzzle.slice(0, idx) + String.fromCharCode(96 + digit) + puzzle.slice(idx + 1)
+
+                // Include if > 5 touches
+                if (touches > 5) {
+                  highlightMoves.push(`${moveNum}: ${oldPuzzle}&${annot}`)
+                }
+              }
+            }
+
+            // Commit title = initial puzzle
+            const summary = initialPuzzle
+
+            // Commit message = header line + highlight moves
+            const commitMessage = [headerLine, ...highlightMoves].join('\n')
 
             // Get current file SHA on the PR branch (needed for update)
             let fileSha
@@ -160,6 +208,7 @@ jobs:
               pull_number: context.issue.number,
               merge_method: 'squash',
               commit_title: summary,
+              commit_message: commitMessage,
             })
 
             // Delete the PR branch
