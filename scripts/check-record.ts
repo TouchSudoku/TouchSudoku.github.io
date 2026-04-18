@@ -19,7 +19,7 @@
 //   1. File name = initial puzzle (line 2) of first (best) block
 //   2. For each block:
 //      a. N = count of '0' in initial puzzle (cells solved from scratch)
-//      b. initial puzzle matches [0-9a-i]{81} (0 = empty, a-i = URL pre-filled)
+//      b. initial puzzle matches [0-9]{81} (0 = empty, no a-i pre-fills)
 //      c. T = sum of touch counts from move lines
 //      d. TIME ≈ reconstructed from sum of move line times (centisecond precision)
 //      e. Move indices are consecutive 1..M
@@ -31,16 +31,16 @@ import { readFileSync } from 'fs'
 import { basename } from 'path'
 
 const PUZZLE_RE    = /^[1-9a-i]{81}$/   // final puzzle: fully solved, no 0s
-const INITIAL_RE   = /^[0-9a-i]{81}$/   // initial puzzle: may have 0s or URL pre-fills
+const INITIAL_RE   = /^[0-9]{81}$/      // initial puzzle: only 0-9 (no URL pre-fills)
 const HEADER_RE = /^(\d+) numbers, (\d+) touches in (\d+)'(\d{2})"(\d{2}) by (\S+)$/
 const MOVE_RE   = /^(\d+): .+ # (\d+)T(\d+)"(\d{2}): .*$/
 
 function err(msg: string): void {
-  console.error(`  ERROR: ${msg}`)
+  process.stderr.write(`  ERROR: ${msg}\n`)
 }
 
 function warn(msg: string): void {
-  console.warn(`  WARN:  ${msg}`)
+  process.stderr.write(`  WARN:  ${msg}\n`)
 }
 
 function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount: number; fixedBlock?: string; timeFixed?: boolean } {
@@ -68,7 +68,11 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
 
   // ── Initial puzzle ───────────────────────────────────────────────────────
   if (!INITIAL_RE.test(initialLine)) {
-    err(`${label}: initial puzzle is not 81 chars of [0-9a-i] (got "${initialLine.slice(0, 20)}…")`)
+    err(`${label}: initial puzzle is not 81 chars of [0-9] (got "${initialLine.slice(0, 20)}…")`)
+    ok = false
+  }
+  if (/[a-i]/.test(initialLine)) {
+    err(`${label}: initial puzzle contains pre-filled cells [a-i] (records must show user-solved moves only)`)
     ok = false
   }
   // Every non-zero char in initial must match the final puzzle
@@ -244,12 +248,12 @@ if (!filePath) {
   process.exit(1)
 }
 
-console.log(`Checking: ${filePath}`)
+console.error(`Checking: ${filePath}`)
 const { ok, hasTimeFixedBlocks, fixedBlocks } = checkRecord(filePath)
 
-// Output result + any fixed blocks as JSON to stdout
+// Output result + any fixed blocks as JSON to stdout (only JSON, no other text)
 const result = { ok, hasTimeFixedBlocks, fixedBlocks }
-console.log(JSON.stringify(result, null, 2))
+process.stdout.write(JSON.stringify(result, null, 2) + '\n')
 
 if (ok) {
   process.exit(0)
