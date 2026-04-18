@@ -1,3 +1,4 @@
 .meteor/local
 .meteor/meteorite
 .antlr/
+node_modules/

@@ -1,0 +1,13 @@
+name: Process Record Submission
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  process:
+    uses: TouchSudoku/TouchSudoku.github.io/.github/workflows/process-record.yml@records
+    secrets: inherit
+    permissions:
+      contents: write
+      issues: write
