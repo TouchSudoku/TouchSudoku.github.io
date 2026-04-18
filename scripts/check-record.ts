@@ -43,9 +43,11 @@ function warn(msg: string): void {
   console.warn(`  WARN:  ${msg}`)
 }
 
-function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount: number } {
+function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount: number; fixedBlock?: string; timeFixed?: boolean } {
   const label = `Block ${blockIdx + 1}`
   let ok = true
+  let timeFixed = false
+  let fixedBlock: string | undefined = undefined
   const lines = block.split('\n')
 
   if (lines.length < 4) {
@@ -149,26 +151,40 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
     )
     if (diff > toleranceMs) {
       err(`${label}: TIME=${headerMm}'${headerSs}"${headerCc} but move times sum to ${recMm}'${recSs}"${recCc} (diff ${diff}ms > tolerance ${toleranceMs}ms)`)
-      ok = false
+      // This is a fixable error — auto-correct the time in the block
+      const login = headerLine.match(/\bby\s+(\S+)$/)?.[1] || 'unknown'
+      const newHeaderLine = `${actualN} numbers, ${sumTouches} touches in ${recMm}'${String(recSs).padStart(2, '0')}"${String(recCc).padStart(2, '0')} by ${login}`
+      const fixedLines = [newHeaderLine, ...lines.slice(1)]
+      fixedBlock = fixedLines.join('\n')
+      timeFixed = true
+      warn(`${label}: Time auto-corrected from ${headerMm}'${headerSs}"${headerCc} to ${recMm}'${recSs}"${recCc}`)
     } else {
       warn(`${label}: TIME ${headerMm}'${headerSs}"${headerCc} vs reconstructed ${recMm}'${recSs}"${recCc} (within truncation tolerance)`)
     }
   }
 
-  return { ok, touchCount: headerT }
+  return { ok, touchCount: headerT, fixedBlock, timeFixed }
 }
 
-function checkRecord(filePath: string): boolean {
+interface CheckResult {
+  ok: boolean
+  hasTimeFixedBlocks: boolean
+  fixedBlocks?: Record<number, string>
+}
+
+function checkRecord(filePath: string): CheckResult {
   const fileName = basename(filePath)
   let raw: string
   try {
     raw = readFileSync(filePath, 'utf8')
   } catch (e) {
     console.error(`Cannot read file: ${filePath}`)
-    return false
+    return { ok: false, hasTimeFixedBlocks: false }
   }
 
   let allOk = true
+  let hasTimeFixedBlocks = false
+  const fixedBlocks: Record<number, string> = {}
 
   // Must end with a single newline (empty line at end)
   if (!raw.endsWith('\n')) {
@@ -180,7 +196,7 @@ function checkRecord(filePath: string): boolean {
 
   if (blocks.length === 0) {
     err('File contains no record blocks')
-    return false
+    return { ok: false, hasTimeFixedBlocks: false }
   }
   if (blocks.length > 3) {
     err(`File contains ${blocks.length} blocks (max 3)`)
@@ -198,8 +214,15 @@ function checkRecord(filePath: string): boolean {
   // Verify each block
   const touchCounts: number[] = []
   for (let i = 0; i < blocks.length; i++) {
-    const { ok, touchCount } = verifyBlock(blocks[i], i)
+    const { ok, touchCount, fixedBlock, timeFixed } = verifyBlock(blocks[i], i)
     if (!ok) allOk = false
+    if (fixedBlock) {
+      fixedBlocks[i] = fixedBlock
+      hasTimeFixedBlocks = true
+    }
+    if (timeFixed) {
+      hasTimeFixedBlocks = true
+    }
     touchCounts.push(touchCount)
   }
 
@@ -211,7 +234,7 @@ function checkRecord(filePath: string): boolean {
     }
   }
 
-  return allOk
+  return { ok: allOk, hasTimeFixedBlocks, fixedBlocks }
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────
@@ -222,10 +245,17 @@ if (!filePath) {
 }
 
 console.log(`Checking: ${filePath}`)
-const ok = checkRecord(filePath)
+const { ok, hasTimeFixedBlocks, fixedBlocks } = checkRecord(filePath)
+
+// Output result + any fixed blocks as JSON to stdout
+const result = { ok, hasTimeFixedBlocks, fixedBlocks }
+console.log(JSON.stringify(result, null, 2))
+
 if (ok) {
-  console.log('OK')
   process.exit(0)
+} else if (hasTimeFixedBlocks) {
+  // Exit with code 2 = has errors but can fix with time corrections
+  process.exit(2)
 } else {
   process.exit(1)
 }

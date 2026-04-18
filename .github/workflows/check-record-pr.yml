@@ -98,7 +98,20 @@ jobs:
           INITIAL_PUZZLE=$(sed -n '2p' /tmp/new-block)
           echo "$NEW_BLOCK" > "/tmp/$INITIAL_PUZZLE"
           printf '\n' >> "/tmp/$INITIAL_PUZZLE"
-          bun run scripts/check-record.ts "/tmp/$INITIAL_PUZZLE"
+          bun run scripts/check-record.ts "/tmp/$INITIAL_PUZZLE" > /tmp/check-result.json 2>&1 || EXIT_CODE=$?
+
+          # Handle exit codes:
+          # 0 = OK, 2 = fixable errors (time mismatch), 1 = critical errors
+          EXIT_CODE=${EXIT_CODE:-0}
+          cat /tmp/check-result.json
+
+          if [ $EXIT_CODE -eq 1 ]; then
+            echo "::error::Critical verification errors found"
+            exit 1
+          elif [ $EXIT_CODE -eq 2 ]; then
+            echo "::warning::Fixable errors found (will auto-correct)"
+            echo "check_result=$(cat /tmp/check-result.json)" >> $GITHUB_OUTPUT
+          fi
 
       - name: Write merged record to PR branch and merge PR
         uses: actions/github-script@v7
@@ -106,7 +119,21 @@ jobs:
           script: |
             const fs = require('fs')
             const base     = fs.existsSync('/tmp/base-record') ? fs.readFileSync('/tmp/base-record', 'utf8') : ''
-            const newBlock = fs.readFileSync('/tmp/new-block',  'utf8').trim()
+            let newBlock = fs.readFileSync('/tmp/new-block',  'utf8').trim()
+
+            // Apply time corrections if they exist
+            const checkResultStr = `${{ steps.verify.outputs.check_result }}`
+            if (checkResultStr && checkResultStr.startsWith('{')) {
+              try {
+                const checkResult = JSON.parse(checkResultStr)
+                if (checkResult.fixedBlocks && checkResult.fixedBlocks[0]) {
+                  newBlock = checkResult.fixedBlocks[0]
+                  console.log('Applied time correction to new block')
+                }
+              } catch (e) {
+                console.warn('Could not parse check result:', e.message)
+              }
+            }
 
             const blocks = [
               ...base.trimEnd().split('\n===\n').map(b => b.trim()).filter(Boolean),
