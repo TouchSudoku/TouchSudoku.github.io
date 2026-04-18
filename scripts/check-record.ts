@@ -33,7 +33,17 @@ import { basename } from 'path'
 const PUZZLE_RE    = /^[1-9a-i]{81}$/   // final puzzle: fully solved, no 0s
 const INITIAL_RE   = /^[0-9]{81}$/      // initial puzzle: only 0-9 (no URL pre-fills)
 const HEADER_RE = /^(\d+) numbers, (\d+) touches in (\d+)'(\d{2})"(\d{2}) by (\S+)$/
-const MOVE_RE   = /^(\d+): .+ # (\d+)T(\d+)"(\d{2}): .*$/
+const MOVE_RE   = /^(\d+): ([^#]+)# (\d+)T(\d+)"(\d{2}): .*$/
+
+// Box-cell notation (bc) → linear index 0-80
+// box 1-9, cell 1-9
+function bcToIndex(bc: string): number {
+  const box  = parseInt(bc[0]) - 1
+  const cell = parseInt(bc[1]) - 1
+  const row  = Math.floor(box / 3) * 3 + Math.floor(cell / 3)
+  const col  = (box % 3) * 3 + (cell % 3)
+  return row * 9 + col
+}
 
 function err(msg: string): void {
   process.stderr.write(`  ERROR: ${msg}\n`)
@@ -114,6 +124,13 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
   let sumTouches = 0
   let sumMs      = 0
 
+  // Track which empty cells are solved by moves
+  const emptyCells = new Set<number>()
+  for (let i = 0; i < 81; i++) {
+    if (initialLine[i] === '0') emptyCells.add(i)
+  }
+  const solvedCells = new Set<number>()
+
   for (let i = 0; i < moveLines.length; i++) {
     const line = moveLines[i]
     const mm   = MOVE_RE.exec(line)
@@ -122,13 +139,39 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
       ok = false
       continue
     }
-    const [, idx, t, sec, cc] = mm
+    const [, idx, annotation, t, sec, cc] = mm
     if (parseInt(idx) !== i + 1) {
       err(`${label}: move index mismatch at line ${i + 1}: got ${idx}`)
       ok = false
     }
     sumTouches += parseInt(t)
     sumMs      += parseInt(sec) * 1000 + parseInt(cc) * 10
+
+    // Parse answer cells from annotation (format: "RCV,RCV,... = ...")
+    const answerPart = annotation.split('=')[0].trim()
+    for (const ans of answerPart.split(',')) {
+      const a = ans.trim()
+      if (/^[1-9][1-9][0-9]$/.test(a)) {
+        const cellIdx = bcToIndex(a)
+        if (solvedCells.has(cellIdx)) {
+          err(`${label}: move ${i + 1} solves cell ${a.slice(0, 2)} which was already solved`)
+          ok = false
+        }
+        solvedCells.add(cellIdx)
+      }
+    }
+  }
+
+  // Every empty cell must be solved by exactly one move
+  const unsolved = [...emptyCells].filter(c => !solvedCells.has(c))
+  const extra    = [...solvedCells].filter(c => !emptyCells.has(c))
+  if (unsolved.length > 0) {
+    err(`${label}: ${unsolved.length} empty cell(s) never solved by any move`)
+    ok = false
+  }
+  if (extra.length > 0) {
+    err(`${label}: ${extra.length} move answer(s) target pre-filled cell(s)`)
+    ok = false
   }
 
   // ── T ────────────────────────────────────────────────────────────────────
@@ -255,11 +298,12 @@ const { ok, hasTimeFixedBlocks, fixedBlocks } = checkRecord(filePath)
 const result = { ok, hasTimeFixedBlocks, fixedBlocks }
 process.stdout.write(JSON.stringify(result, null, 2) + '\n')
 
-if (ok) {
-  process.exit(0)
-} else if (hasTimeFixedBlocks) {
-  // Exit with code 2 = has errors but can fix with time corrections
+// Exit 0 = valid, 1 = invalid, 2 = time-only mismatch (auto-correctable)
+// ok=false means hard errors exist (not counting time mismatch)
+if (ok && hasTimeFixedBlocks) {
   process.exit(2)
+} else if (ok) {
+  process.exit(0)
 } else {
   process.exit(1)
 }

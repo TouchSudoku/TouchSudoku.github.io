@@ -75,7 +75,7 @@ jobs:
 
           # Disable exit-on-error temporarily to capture exit code 2 (auto-corrected)
           set +e
-          npx ts-node scripts/check-record.ts "$PUZZLE_STRING" > output.json 2> errors.txt
+          npx ts-node --skipProject -O '{"module":"CommonJS"}' scripts/check-record.ts "$PUZZLE_STRING" > output.json 2> errors.txt
           EXIT_CODE=$?
           set -e
 
@@ -135,7 +135,7 @@ jobs:
 
           # Merge new block into record file (script writes the file on success)
           set +e
-          npx ts-node scripts/compare-records.ts "$RECORD_FILE" new_record 2>&1
+          npx ts-node --skipProject -O '{"module":"CommonJS"}' scripts/compare-records.ts "$RECORD_FILE" new_record 2>&1
           COMPARE_EXIT_CODE=$?
           set -e
           rm -f new_record
