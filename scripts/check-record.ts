@@ -297,14 +297,13 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
       (headerMm * 60 + headerSs) * 1000 + headerCc * 10 - sumMs
     )
     if (diff > toleranceMs) {
-      err(`${label}: TIME=${headerMm}'${headerSs}"${headerCc} but move times sum to ${recMm}'${recSs}"${recCc} (diff ${diff}ms > tolerance ${toleranceMs}ms)`)
-      // This is a fixable error — auto-correct the time in the block
+      warn(`${label}: TIME=${headerMm}'${headerSs}"${headerCc} but move times sum to ${recMm}'${recSs}"${recCc} (diff ${diff}ms > tolerance ${toleranceMs}ms) — auto-correcting`)
+      // This is a fixable error — auto-correct the time in the block (does not set ok=false)
       const login = headerLine.match(/\bby\s+(\S+)$/)?.[1] || 'unknown'
       const newHeaderLine = `${actualN} numbers, ${sumTouches} touches in ${recMm}'${String(recSs).padStart(2, '0')}"${String(recCc).padStart(2, '0')} by ${login}`
       const fixedLines = [newHeaderLine, ...lines.slice(1)]
       fixedBlock = fixedLines.join('\n')
       timeFixed = true
-      warn(`${label}: Time auto-corrected from ${headerMm}'${headerSs}"${headerCc} to ${recMm}'${recSs}"${recCc}`)
     } else {
       warn(`${label}: TIME ${headerMm}'${headerSs}"${headerCc} vs reconstructed ${recMm}'${recSs}"${recCc} (within truncation tolerance)`)
     }
