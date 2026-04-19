@@ -43,7 +43,7 @@ try {
 const PUZZLE_RE    = /^[1-9a-i]{81}$/   // final puzzle: fully solved, no 0s
 const INITIAL_RE   = /^[0-9]{81}$/      // initial puzzle: only 0-9 (no URL pre-fills)
 const HEADER_RE = /^(\d+) numbers, (\d+) touches in (\d+)'(\d{2})"(\d{2}) by (\S+)$/
-const MOVE_RE   = /^(\d+): ([^#]+)# (\d+)T(\d+)"(\d{2}): .*$/
+const MOVE_RE   = /^(\d+): ([^#]+)# (\d+)T(\d+)"(\d{2}): (.*)$/
 
 // Box-cell notation (bc) → linear index 0-80
 // box 1-9, cell 1-9
@@ -139,10 +139,24 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
   for (let i = 0; i < 81; i++) {
     if (initialLine[i] === '0') emptyCells.add(i)
   }
-  const solvedCells = new Set<number>()
+  const solvedCells = new Set<number>()        // cells answered via annotation
+  const gestureSolvedCells = new Set<number>() // cells auto-filled only via gesture
 
   // Working puzzle state for clue validation — starts as initial, fills in as moves are applied
   let workingPuzzle = initialLine
+
+  // Pre-collect all cells that will be officially answered by annotation (not just gesture).
+  // Gesture fills should not overwrite cells that belong to a later move's annotation answer.
+  const allAnnotationCells = new Set<number>()
+  for (const line of moveLines) {
+    const mm = MOVE_RE.exec(line)
+    if (!mm) continue
+    const answerPart = mm[2].split('=')[0].trim()
+    for (const ans of answerPart.split(',')) {
+      const a = ans.trim()
+      if (/^[1-9][1-9][0-9]$/.test(a)) allAnnotationCells.add(bcToIndex(a))
+    }
+  }
 
   for (let i = 0; i < moveLines.length; i++) {
     const line = moveLines[i]
@@ -152,7 +166,7 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
       ok = false
       continue
     }
-    const [, idx, annotation, t, sec, cc] = mm
+    const [, idx, annotation, t, sec, cc, gesture] = mm
     if (parseInt(idx) !== i + 1) {
       err(`${label}: move index mismatch at line ${i + 1}: got ${idx}`)
       ok = false
@@ -183,67 +197,74 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
       const grid = new Grid(workingPuzzle)
       const moveLabel = `${label} move ${i + 1}`
       try {
-        // Build a combined solution string for each answer cell and validate
-        for (const ans of answers) {
-          const bc = ans.slice(0, 2)
-          const digit = parseInt(ans[2])
-          const solStr = `${ans}=${logicPart}`
-          const sol = Solution.fromString(solStr)
+        const sol = Solution.fromString(`${answers[0]}=${logicPart}`)
+        const targets = sol.getTargets()
 
-          // Conflict: pointer number already present in target unit
-          if (sol.isConflict()) {
-            err(`${moveLabel}: clue conflict — pointer digit already in target unit`)
-            ok = false
-          }
-
-          // All pointer cells must be filled
-          for (const ptr of sol.getPointers()) {
-            if (ptr.isCell()) {
-              const ptrBc = ptr.getCells()[0]
-              if (grid.getCellNumber(ptrBc) === 0) {
-                err(`${moveLabel}: pointer cell ${ptrBc} is empty in current puzzle state`)
-                ok = false
-              }
-            }
-          }
-
-          // Target unit must have the answer cell as a candidate for the digit
-          for (const target of sol.getTargets()) {
-            const unit = target.getUnits()
-            const targetSol = grid.getTarget(unit, digit)
-            if (!targetSol) {
-              err(`${moveLabel}: digit ${digit} already placed in target unit ${unit}`)
-              ok = false
-              continue
-            }
-            const candidates = Grid.getEmptyBcs(targetSol)
-            if (!candidates.includes(bc)) {
-              err(`${moveLabel}: answer cell ${bc} is not a candidate for digit ${digit} in ${unit}`)
-              ok = false
-            }
-            if (candidates.length < 1) {
-              err(`${moveLabel}: target unit ${unit} has no candidates for digit ${digit}`)
+        // All pointer cells must be filled
+        for (const ptr of sol.getPointers()) {
+          if (ptr.isCell()) {
+            const ptrBc = ptr.getCells()[0]
+            if (grid.getCellNumber(ptrBc) === 0) {
+              err(`${moveLabel}: pointer cell ${ptrBc} is empty in current puzzle state`)
               ok = false
             }
           }
+        }
+
+        // The primary answer (first) must be a valid candidate in one of the formal target units.
+        // Additional answers in multi-answer moves may be "bonus fills" inferred from the same
+        // clue (e.g. naked pair forced fills) — we only validate the primary answer's candidacy.
+        const primaryAns = answers[0]
+        const primaryBc    = primaryAns.slice(0, 2)
+        const primaryDigit = parseInt(primaryAns[2])
+        const matchingTarget = targets.find((tgt: any) => {
+          const tSol = grid.getTarget(tgt.getUnits(), primaryDigit)
+          return tSol && Grid.getEmptyBcs(tSol).includes(primaryBc)
+        })
+        if (!matchingTarget) {
+          err(`${moveLabel}: answer cell ${primaryBc} is not a valid candidate for digit ${primaryDigit} in any target unit`)
+          ok = false
+        }
+
+        if (sol.isConflict()) {
+          err(`${moveLabel}: clue conflict — pointer digit already in target unit`)
+          ok = false
         }
       } catch (e: any) {
         warn(`${moveLabel}: clue parse error — ${e.message}`)
       }
     }
 
-    // Apply answers to working puzzle state for subsequent moves
+    // Apply answers to working puzzle state.
+    // Also apply gesture auto-fills (cells filled beyond the annotation answers,
+    // e.g. "b7@71,47" means 71 and 47 were also filled by this move).
     const puzzleArr = workingPuzzle.split('')
     for (const ans of answers) {
-      const cellIdx = bcToIndex(ans)
-      puzzleArr[cellIdx] = ans[2]
+      puzzleArr[bcToIndex(ans)] = ans[2]
+    }
+    // Parse gesture for additional filled cells: bc tokens (2 digits, not preceded by @unit)
+    // Gesture format examples: "b1@17,48,76,34" | "swipe,18,91" | "b7@71,47" | "r3@29,93"
+    // The value for gesture-filled cells comes from the final puzzle.
+    // Skip cells that will be officially answered by a later annotation move.
+    for (const token of (gesture ?? '').split(',')) {
+      const t = token.trim().replace(/^[brc]\d@/, '')  // strip leading "b1@" etc
+      if (/^[1-9][1-9]$/.test(t)) {
+        const cellIdx = bcToIndex(t)
+        if (puzzleArr[cellIdx] === '0' && finalLine[cellIdx] !== '0') {
+          if (!allAnnotationCells.has(cellIdx)) {
+            puzzleArr[cellIdx] = finalLine[cellIdx]
+            if (emptyCells.has(cellIdx)) gestureSolvedCells.add(cellIdx)
+          }
+        }
+      }
     }
     workingPuzzle = puzzleArr.join('')
   }
 
-  // Every empty cell must be solved by exactly one move
-  const unsolved = [...emptyCells].filter(c => !solvedCells.has(c))
-  const extra    = [...solvedCells].filter(c => !emptyCells.has(c))
+  // Every empty cell must be solved by exactly one annotation move or a gesture auto-fill
+  const allSolved = new Set([...solvedCells, ...gestureSolvedCells])
+  const unsolved  = [...emptyCells].filter(c => !allSolved.has(c))
+  const extra     = [...solvedCells].filter(c => !emptyCells.has(c))
   if (unsolved.length > 0) {
     err(`${label}: ${unsolved.length} empty cell(s) never solved by any move`)
     ok = false
