@@ -32,6 +32,9 @@ jobs:
           fetch-depth: 0
           ref: records
 
+      - name: Fetch lib from master
+        run: git checkout origin/master -- lib/sudoku-core.cjs
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

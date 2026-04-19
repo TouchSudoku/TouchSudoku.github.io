@@ -28,7 +28,17 @@
 //   4. Max 3 blocks
 
 import { readFileSync } from 'fs'
-import { basename } from 'path'
+import { basename, join, dirname } from 'path'
+
+// Load sudoku-core lib (built from TouchSudoku/src/lib.ts, deployed to lib/)
+let Grid: any, Solution: any
+try {
+  const lib = require(join(dirname(__dirname), 'lib', 'sudoku-core.cjs'))
+  Grid = lib.Grid
+  Solution = lib.Solution
+} catch {
+  process.stderr.write('  WARN: sudoku-core.cjs not found — skipping clue validation\n')
+}
 
 const PUZZLE_RE    = /^[1-9a-i]{81}$/   // final puzzle: fully solved, no 0s
 const INITIAL_RE   = /^[0-9]{81}$/      // initial puzzle: only 0-9 (no URL pre-fills)
@@ -131,6 +141,9 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
   }
   const solvedCells = new Set<number>()
 
+  // Working puzzle state for clue validation — starts as initial, fills in as moves are applied
+  let workingPuzzle = initialLine
+
   for (let i = 0; i < moveLines.length; i++) {
     const line = moveLines[i]
     const mm   = MOVE_RE.exec(line)
@@ -149,6 +162,9 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
 
     // Parse answer cells from annotation (format: "RCV,RCV,... = ...")
     const answerPart = annotation.split('=')[0].trim()
+    const logicPart  = annotation.split('=').slice(1).join('=').trim()
+    const answers: string[] = []  // e.g. ['178', '143']
+
     for (const ans of answerPart.split(',')) {
       const a = ans.trim()
       if (/^[1-9][1-9][0-9]$/.test(a)) {
@@ -158,8 +174,71 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
           ok = false
         }
         solvedCells.add(cellIdx)
+        answers.push(a)
       }
     }
+
+    // ── Clue validation (requires sudoku-core lib) ───────────────────────────
+    if (Grid && Solution && logicPart && answers.length > 0) {
+      const grid = new Grid(workingPuzzle)
+      const moveLabel = `${label} move ${i + 1}`
+      try {
+        // Build a combined solution string for each answer cell and validate
+        for (const ans of answers) {
+          const bc = ans.slice(0, 2)
+          const digit = parseInt(ans[2])
+          const solStr = `${ans}=${logicPart}`
+          const sol = Solution.fromString(solStr)
+
+          // Conflict: pointer number already present in target unit
+          if (sol.isConflict()) {
+            err(`${moveLabel}: clue conflict — pointer digit already in target unit`)
+            ok = false
+          }
+
+          // All pointer cells must be filled
+          for (const ptr of sol.getPointers()) {
+            if (ptr.isCell()) {
+              const ptrBc = ptr.getCells()[0]
+              if (grid.getCellNumber(ptrBc) === 0) {
+                err(`${moveLabel}: pointer cell ${ptrBc} is empty in current puzzle state`)
+                ok = false
+              }
+            }
+          }
+
+          // Target unit must have the answer cell as a candidate for the digit
+          for (const target of sol.getTargets()) {
+            const unit = target.getUnits()
+            const targetSol = grid.getTarget(unit, digit)
+            if (!targetSol) {
+              err(`${moveLabel}: digit ${digit} already placed in target unit ${unit}`)
+              ok = false
+              continue
+            }
+            const candidates = Grid.getEmptyBcs(targetSol)
+            if (!candidates.includes(bc)) {
+              err(`${moveLabel}: answer cell ${bc} is not a candidate for digit ${digit} in ${unit}`)
+              ok = false
+            }
+            if (candidates.length < 1) {
+              err(`${moveLabel}: target unit ${unit} has no candidates for digit ${digit}`)
+              ok = false
+            }
+          }
+        }
+      } catch (e: any) {
+        warn(`${moveLabel}: clue parse error — ${e.message}`)
+      }
+    }
+
+    // Apply answers to working puzzle state for subsequent moves
+    const puzzleArr = workingPuzzle.split('')
+    for (const ans of answers) {
+      const cellIdx = bcToIndex(ans)
+      puzzleArr[cellIdx] = ans[2]
+    }
+    workingPuzzle = puzzleArr.join('')
   }
 
   // Every empty cell must be solved by exactly one move
