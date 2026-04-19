@@ -116,14 +116,13 @@ jobs:
 
           if [ "$EXIT_CODE" = "0" ]; then
             echo "status=valid" >> "$GITHUB_OUTPUT"
-            # For exit 0, read the original (already validated) file from disk
             echo "record<<${DELIM}" >> "$GITHUB_OUTPUT"
-            cat "$VALIDATE_PUZZLE" >> "$GITHUB_OUTPUT"
+            { cat "$VALIDATE_PUZZLE"; echo; } >> "$GITHUB_OUTPUT"
             echo "${DELIM}" >> "$GITHUB_OUTPUT"
           elif [ "$EXIT_CODE" = "2" ]; then
             echo "status=corrected" >> "$GITHUB_OUTPUT"
             echo "record<<${DELIM}" >> "$GITHUB_OUTPUT"
-            jq -r '.fixedBlocks["0"]' result.json >> "$GITHUB_OUTPUT"
+            { jq -r '.fixedBlocks["0"]' result.json; echo; } >> "$GITHUB_OUTPUT"
             echo "${DELIM}" >> "$GITHUB_OUTPUT"
           else
             echo "status=invalid" >> "$GITHUB_OUTPUT"
