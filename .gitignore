@@ -2,3 +2,4 @@
 .meteor/meteorite
 .antlr/
 node_modules/
+lib/
