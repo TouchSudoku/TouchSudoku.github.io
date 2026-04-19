@@ -75,8 +75,6 @@ jobs:
           # Get puzzle string (second line) and use as filename (no extension)
           PUZZLE_STRING=$(sed -n '2p' record_body.txt)
           mv record_body.txt "$PUZZLE_STRING"
-          # Ensure file ends with newline (printf '%s' omits it)
-          printf '\n' >> "$PUZZLE_STRING"
 
           # Disable exit-on-error temporarily to capture exit code 2 (auto-corrected)
           set +e

@@ -332,11 +332,8 @@ function checkRecord(filePath: string): CheckResult {
   let hasTimeFixedBlocks = false
   const fixedBlocks: Record<number, string> = {}
 
-  // Must end with a single newline (empty line at end)
-  if (!raw.endsWith('\n')) {
-    err('File does not end with a newline')
-    allOk = false
-  }
+  // Normalize: ensure file ends with exactly one newline
+  if (!raw.endsWith('\n')) raw = raw + '\n'
 
   const blocks = raw.trimEnd().split('\n===\n').map(b => b.trim()).filter(Boolean)
 
