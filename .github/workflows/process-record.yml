@@ -152,6 +152,7 @@ jobs:
           if [ $COMPARE_EXIT_CODE -eq 0 ]; then
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
+            git rm --cached lib/sudoku-core.cjs 2>/dev/null || true
             git add "$RECORD_FILE"
             git commit -m "$PUZZLE_STRING"
             git push origin records
