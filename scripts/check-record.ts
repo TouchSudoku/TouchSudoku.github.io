@@ -42,7 +42,9 @@ try {
 
 const PUZZLE_RE    = /^[1-9a-i]{81}$/   // final puzzle: fully solved, no 0s
 const INITIAL_RE   = /^[0-9]{81}$/      // initial puzzle: only 0-9 (no URL pre-fills)
-const HEADER_RE = /^(\d+) numbers, (\d+) touches in (\d+)'(\d{2})"(\d{2}) by (\S+)$/
+// New format: M'SS"CC  |  Old format (script-generated): S"CC  (no minutes)
+const HEADER_RE     = /^(\d+) numbers, (\d+) touches in (\d+)'(\d{2})"(\d{2}) by (\S+)$/
+const HEADER_RE_OLD = /^(\d+) numbers, (\d+) touches in (\d+)"(\d{2}) by (\S+)$/
 const MOVE_RE   = /^(\d+): ([^#]+)# (\d+)T(\d+)"(\d{2}): (.*)$/
 
 // Box-cell notation (bc) → linear index 0-80
@@ -106,17 +108,18 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
   }
 
   // ── Header ───────────────────────────────────────────────────────────────
-  const hm = HEADER_RE.exec(headerLine)
-  if (!hm) {
+  const hm    = HEADER_RE.exec(headerLine)
+  const hmOld = !hm ? HEADER_RE_OLD.exec(headerLine) : null
+  if (!hm && !hmOld) {
     err(`${label}: header line does not match expected format: "${headerLine}"`)
     return { ok: false, touchCount: 0 }
   }
-  const [, hN, hT, hMm, hSs, hCc] = hm
-  const headerN   = parseInt(hN)
-  const headerT   = parseInt(hT)
-  const headerMm  = parseInt(hMm)
-  const headerSs  = parseInt(hSs)
-  const headerCc  = parseInt(hCc)
+  const isOldFormat = !!hmOld
+  const headerN  = parseInt(hm ? hm[1] : hmOld![1])
+  const headerT  = parseInt(hm ? hm[2] : hmOld![2])
+  const headerMm = hm ? parseInt(hm[3]) : 0
+  const headerSs = hm ? parseInt(hm[4]) : parseInt(hmOld![3])
+  const headerCc = hm ? parseInt(hm[5]) : parseInt(hmOld![4])
 
   // N = count of '0' in initial puzzle (cells the user solved from scratch)
   const actualN = (initialLine.match(/0/g) ?? []).length
@@ -193,7 +196,10 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
     }
 
     // ── Clue validation (requires sudoku-core lib) ───────────────────────────
-    if (Grid && Solution && logicPart && answers.length > 0) {
+    // Skip swipe moves — they span multiple boxes and aren't standard clue units.
+    // Skip old-format blocks — script-generated, gesture tracking state is unreliable.
+    const isSwipe = (gesture ?? '').trimStart().startsWith('swipe')
+    if (Grid && Solution && logicPart && answers.length > 0 && !isSwipe && !isOldFormat) {
       const grid = new Grid(workingPuzzle)
       const moveLabel = `${label} move ${i + 1}`
       try {
@@ -281,31 +287,35 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
   }
 
   // ── TIME ─────────────────────────────────────────────────────────────────
-  // Move lines store floor(ms/10) centiseconds, so sumMs may be up to
-  // moveLines.length * 9 ms less than the original totalMs. Reconstruct
-  // the expected TIME from sumMs the same way the app does.
-  const totalSec    = Math.floor(sumMs / 1000)
-  const recCc       = Math.floor((sumMs % 1000) / 10)
-  const recMm       = Math.floor(totalSec / 60)
-  const recSs       = totalSec % 60
+  // Old-format script records use S"CC (no minutes) — skip time validation
+  // since we can't auto-correct without changing the format.
+  if (!isOldFormat) {
+    // Move lines store floor(ms/10) centiseconds, so sumMs may be up to
+    // moveLines.length * 9 ms less than the original totalMs. Reconstruct
+    // the expected TIME from sumMs the same way the app does.
+    const totalSec    = Math.floor(sumMs / 1000)
+    const recCc       = Math.floor((sumMs % 1000) / 10)
+    const recMm       = Math.floor(totalSec / 60)
+    const recSs       = totalSec % 60
 
-  const timeMatch = recMm === headerMm && recSs === headerSs && recCc === headerCc
-  if (!timeMatch) {
-    // Allow ±1 centisecond tolerance per move due to truncation
-    const toleranceMs = moveLines.length * 10
-    const diff = Math.abs(
-      (headerMm * 60 + headerSs) * 1000 + headerCc * 10 - sumMs
-    )
-    if (diff > toleranceMs) {
-      warn(`${label}: TIME=${headerMm}'${headerSs}"${headerCc} but move times sum to ${recMm}'${recSs}"${recCc} (diff ${diff}ms > tolerance ${toleranceMs}ms) — auto-correcting`)
-      // This is a fixable error — auto-correct the time in the block (does not set ok=false)
-      const login = headerLine.match(/\bby\s+(\S+)$/)?.[1] || 'unknown'
-      const newHeaderLine = `${actualN} numbers, ${sumTouches} touches in ${recMm}'${String(recSs).padStart(2, '0')}"${String(recCc).padStart(2, '0')} by ${login}`
-      const fixedLines = [newHeaderLine, ...lines.slice(1)]
-      fixedBlock = fixedLines.join('\n')
-      timeFixed = true
-    } else {
-      warn(`${label}: TIME ${headerMm}'${headerSs}"${headerCc} vs reconstructed ${recMm}'${recSs}"${recCc} (within truncation tolerance)`)
+    const timeMatch = recMm === headerMm && recSs === headerSs && recCc === headerCc
+    if (!timeMatch) {
+      // Allow ±1 centisecond tolerance per move due to truncation
+      const toleranceMs = moveLines.length * 10
+      const diff = Math.abs(
+        (headerMm * 60 + headerSs) * 1000 + headerCc * 10 - sumMs
+      )
+      if (diff > toleranceMs) {
+        warn(`${label}: TIME=${headerMm}'${headerSs}"${headerCc} but move times sum to ${recMm}'${recSs}"${recCc} (diff ${diff}ms > tolerance ${toleranceMs}ms) — auto-correcting`)
+        // This is a fixable error — auto-correct the time in the block (does not set ok=false)
+        const login = headerLine.match(/\bby\s+(\S+)$/)?.[1] || 'unknown'
+        const newHeaderLine = `${actualN} numbers, ${sumTouches} touches in ${recMm}'${String(recSs).padStart(2, '0')}"${String(recCc).padStart(2, '0')} by ${login}`
+        const fixedLines = [newHeaderLine, ...lines.slice(1)]
+        fixedBlock = fixedLines.join('\n')
+        timeFixed = true
+      } else {
+        warn(`${label}: TIME ${headerMm}'${headerSs}"${headerCc} vs reconstructed ${recMm}'${recSs}"${recCc} (within truncation tolerance)`)
+      }
     }
   }
 
@@ -381,14 +391,29 @@ function checkRecord(filePath: string): CheckResult {
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────
-const [, , filePath] = process.argv
+const args = process.argv.slice(2)
+const fixFlag = args.includes('--fix')
+const filePath = args.find(a => !a.startsWith('--'))
+
 if (!filePath) {
-  console.error('Usage: bun run scripts/check-record.ts <record-file>')
+  console.error('Usage: bun run scripts/check-record.ts [--fix] <record-file>')
   process.exit(1)
 }
 
 console.error(`Checking: ${filePath}`)
 const { ok, hasTimeFixedBlocks, fixedBlocks } = checkRecord(filePath)
+
+// Apply fixes in-place if --fix is passed and there are auto-correctable blocks
+if (fixFlag && hasTimeFixedBlocks && ok) {
+  const raw = readFileSync(filePath, 'utf8')
+  const blocks = raw.trimEnd().split('\n===\n').map(b => b.trim()).filter(Boolean)
+  for (const [i, fixed] of Object.entries(fixedBlocks ?? {})) {
+    blocks[parseInt(i)] = (fixed as string).trimEnd()
+  }
+  const { writeFileSync } = require('fs')
+  writeFileSync(filePath, blocks.join('\n===\n') + '\n', 'utf8')
+  console.error(`  Fixed: ${filePath}`)
+}
 
 // Output result + any fixed blocks as JSON to stdout (only JSON, no other text)
 const result = { ok, hasTimeFixedBlocks, fixedBlocks }
