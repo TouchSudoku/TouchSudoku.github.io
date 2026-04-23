@@ -248,14 +248,18 @@ function verifyBlock(block: string, blockIdx: number): { ok: boolean; touchCount
     for (const ans of answers) {
       puzzleArr[bcToIndex(ans)] = ans[2]
     }
-    // Parse gesture for additional filled cells: bc tokens (2 digits, not preceded by @unit)
+    // Parse gesture for additional filled cells.
     // Gesture format examples: "b1@17,48,76,34" | "swipe,18,91" | "b7@71,47" | "r3@29,93"
+    // "unit@startCell" — startCell is the answer cell (already in annotation), not an auto-fill.
+    // Only bare bc tokens not preceded by "@" are auto-fills.
     // The value for gesture-filled cells comes from the final puzzle.
     // Skip cells that will be officially answered by a later annotation move.
     for (const token of (gesture ?? '').split(',')) {
-      const t = token.trim().replace(/^[brc]\d@/, '')  // strip leading "b1@" etc
-      if (/^[1-9][1-9]$/.test(t)) {
-        const cellIdx = bcToIndex(t)
+      const raw = token.trim()
+      // Skip tokens that contain '@' — these are "unit@startCell" pairs, not auto-fills
+      if (raw.includes('@')) continue
+      if (/^[1-9][1-9]$/.test(raw)) {
+        const cellIdx = bcToIndex(raw)
         if (puzzleArr[cellIdx] === '0' && finalLine[cellIdx] !== '0') {
           if (!allAnnotationCells.has(cellIdx)) {
             puzzleArr[cellIdx] = finalLine[cellIdx]
